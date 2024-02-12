@@ -10,6 +10,9 @@ public static class ServiceExtensions
     {
         services.AddSingleton<ShellView>();
         services.AddSingleton<ShellViewModel>();
+
+        services.AddFromFactory<MainMenuView>();
+        services.AddTransient<MainMenuViewModel>();
     }
 
     public static void AddViewManagerService(this IServiceCollection services)

@@ -37,6 +37,8 @@ public class ViewManagerService : IViewManagerService
     {
         switch (viewName)
         {
+            case ViewName.MainMenu:
+                return _mainMenuFactory.Create();
             default:
                 return null;
         }
@@ -45,5 +47,5 @@ public class ViewManagerService : IViewManagerService
 
 public enum ViewName
 {
-    
+    MainMenu
 }
