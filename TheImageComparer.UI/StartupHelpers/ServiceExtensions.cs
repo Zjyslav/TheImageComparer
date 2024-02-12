@@ -14,7 +14,7 @@ public static class ServiceExtensions
 
     public static void AddViewManagerService(this IServiceCollection services)
     {
-        services.AddSingleton<ViewManagerService>();
+        services.AddSingleton<IViewManagerService, ViewManagerService>();
     }
 
     public static void AddFromFactory<T>(this IServiceCollection services)

@@ -2,7 +2,7 @@
 using TheImageComparer.UI.Views;
 
 namespace TheImageComparer.UI.Services;
-public class ViewManagerService
+public class ViewManagerService : IViewManagerService
 {
     private readonly ContentControl _shellViewer;
     private Stack<IView> _views = new();
