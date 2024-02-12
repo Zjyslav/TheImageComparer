@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="ShellView" TargetType="{x:Type Window}">
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeRegular}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+        <Setter Property="Background" Value="{DynamicResource BackgroundColorMain}"/>
+    </Style>
+
+    <Style x:Key="Header" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeHeader}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,30,0,30"/>
+    </Style>
+</ResourceDictionary>
