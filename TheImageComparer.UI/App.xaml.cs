@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System.Windows;
+using TheImageComparer.UI.ViewModels;
+using TheImageComparer.UI.Views;
 
 namespace TheImageComparer.UI;
 /// <summary>
@@ -14,6 +17,8 @@ public partial class App : Application
         var builder = Host.CreateApplicationBuilder();
 
         // Add services here
+        builder.Services.AddSingleton<ShellView>();
+        builder.Services.AddSingleton<ShellViewModel>();
 
         AppHost = builder.Build();
     }
@@ -21,6 +26,9 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         await AppHost!.StartAsync();
+
+        var shell = AppHost.Services.GetRequiredService<ShellView>();
+        shell.Show();
 
         base.OnStartup(e);
     }
