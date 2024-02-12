@@ -1,15 +1,18 @@
 ﻿using System.Windows.Controls;
+using TheImageComparer.UI.StartupHelpers;
 using TheImageComparer.UI.Views;
 
 namespace TheImageComparer.UI.Services;
 public class ViewManagerService : IViewManagerService
 {
-    private readonly ContentControl _shellViewer;
+    private ContentControl? _viewer;
+    private readonly IAbstractFactory<MainMenuView> _mainMenuFactory;
     private Stack<IView> _views = new();
+    private ViewName _defaultViewName = ViewName.MainMenu;
 
-    public ViewManagerService(ShellView shellView)
+    public ViewManagerService(IAbstractFactory<MainMenuView> mainMenuFactory)
     {
-        _shellViewer = shellView.ShellViewer;
+        _mainMenuFactory = mainMenuFactory;
     }
 
     public void OpenView(ViewName viewName)
@@ -28,9 +31,31 @@ public class ViewManagerService : IViewManagerService
         ShowInShellViewer();
     }
 
+    public void Start(ContentControl viewer)
+    {
+        _viewer = viewer;
+        _views.Clear();
+        ShowInShellViewer();
+    }
+
     private void ShowInShellViewer()
     {
-        _shellViewer.Content = _views.Peek();
+        if (_views.Any() == false)
+            AddDefaultView();
+
+        if (_viewer is null)
+            return;
+
+        _viewer.Content = _views.Peek();
+    }
+
+    private void AddDefaultView()
+    {
+        IView? defaultView = CreateView(_defaultViewName);
+        if (defaultView is null)
+            return;
+
+        _views.Push(defaultView);
     }
 
     private IView? CreateView(ViewName viewName)
