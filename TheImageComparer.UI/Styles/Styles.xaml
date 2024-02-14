@@ -7,10 +7,35 @@
         <Setter Property="Background" Value="{DynamicResource BackgroundColorMain}"/>
     </Style>
 
-    <Style x:Key="Header" TargetType="{x:Type TextBlock}">
+    <Style x:Key="HeaderTextBlock" TargetType="{x:Type TextBlock}">
         <Setter Property="FontSize" Value="{DynamicResource FontSizeHeader}"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="0,30,0,30"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MainMenuButton" TargetType="{x:Type Button}">
+        <Setter Property="Margin" Value="{DynamicResource MainMenuButtonMargins}"/>
+        <Setter Property="Padding" Value="{DynamicResource MainMenuButtonPadding}"/>
+    </Style>
+
+    <Style x:Key="MainMenuButtonPanel" TargetType="{x:Type StackPanel}">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="Margin" Value="{DynamicResource MainManuButtonPanelMargins}"/>
+    </Style>
+
+    <Style x:Key="MainMenuButtonPanelBorder" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{DynamicResource PanelBackgroundColor}"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="White"/>
+        <Setter Property="MaxWidth" Value="1000"/>
     </Style>
 </ResourceDictionary>

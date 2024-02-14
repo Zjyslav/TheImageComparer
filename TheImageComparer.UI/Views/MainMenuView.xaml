@@ -8,10 +8,20 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Style="{DynamicResource Header}">The Image Comparer</TextBlock>
+        <TextBlock Grid.Row="1" Style="{DynamicResource HeaderTextBlock}">The Image Comparer</TextBlock>
+
+        <Border Grid.Row="3"  Style="{DynamicResource MainMenuButtonPanelBorder}">
+            <StackPanel Style="{DynamicResource MainMenuButtonPanel}">
+                <Button Style="{DynamicResource MainMenuButton}">Open DataBase...</Button>
+                <Button Style="{DynamicResource MainMenuButton}">Create DataBase...</Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

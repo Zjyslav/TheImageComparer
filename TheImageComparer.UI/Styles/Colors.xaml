@@ -6,6 +6,12 @@
         <GradientStop Color="#DC392E" Offset="1"/>
     </LinearGradientBrush>
 
+    <LinearGradientBrush x:Key="PanelBackgroundColor" StartPoint="1,0" EndPoint="1,1">
+        <GradientStop Color="#E15A51" Offset="0"/>
+        <GradientStop Color="Black" Offset="1"/>
+    </LinearGradientBrush>
+
     <SolidColorBrush x:Key="TextColor" Color="White"/>
+    <SolidColorBrush x:Key="TextColorDark" Color="Black"/>
 
 </ResourceDictionary>
