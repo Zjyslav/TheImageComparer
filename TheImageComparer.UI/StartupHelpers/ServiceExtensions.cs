@@ -13,6 +13,9 @@ public static class ServiceExtensions
 
         services.AddFromFactory<MainMenuView>();
         services.AddTransient<MainMenuViewModel>();
+
+        services.AddFromFactory<DatabaseMenuView>();
+        services.AddTransient<DatabaseMenuViewModel>();
     }
 
     public static void AddViewManagerService(this IServiceCollection services)

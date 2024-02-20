@@ -9,6 +9,7 @@ public partial class MainMenuViewModel : ObservableObject
 {
     private readonly IIOService _ioService;
     private readonly ISetSqliteDbFilePath _dbFilePath;
+    private readonly IViewManagerService _viewManager;
     private readonly IResourcesService _resources;
 
     public MainMenuViewModel(IIOService ioService,
@@ -18,11 +19,9 @@ public partial class MainMenuViewModel : ObservableObject
     {
         _ioService = ioService;
         _dbFilePath = dbFilePath;
-        ViewManager = viewManager;
+        _viewManager = viewManager;
         _resources = resources;
     }
-
-    public IViewManagerService ViewManager { get; }
 
     [RelayCommand]
     private void OpenDatabase()
@@ -31,7 +30,7 @@ public partial class MainMenuViewModel : ObservableObject
         if (string.IsNullOrWhiteSpace(dbFilePath) == false)
         {
             _dbFilePath.DbFilePath = dbFilePath;
-            // navigate to another view
+            _viewManager.OpenView(ViewName.DatabaseMenu);
         }
     }
     [RelayCommand]
@@ -42,7 +41,7 @@ public partial class MainMenuViewModel : ObservableObject
         {
             File.WriteAllBytes(dbSavePath, _resources.DatabaseTemplate);
             _dbFilePath.DbFilePath = dbSavePath;
-            // navigate to another view
+            _viewManager.OpenView(ViewName.DatabaseMenu);
         }
     }
 }
