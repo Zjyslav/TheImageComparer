@@ -24,6 +24,7 @@ public partial class App : Application
         builder.Services.AddSqliteDataAccess();
         builder.Services.AddTransient<IResourcesService, ResourcesService>();
         builder.Services.AddTransient<IImageComparerService, ImageComparerService>();
+        builder.Services.AddTransient<IIOService, IOService>();
         builder.Services.AddViewsAndViewModels();
         builder.Services.AddViewManagerService();
 
