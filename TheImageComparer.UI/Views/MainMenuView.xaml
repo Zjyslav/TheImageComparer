@@ -22,7 +22,7 @@
         <Border Grid.Row="3"  Style="{DynamicResource MainMenuButtonPanelBorder}">
             <StackPanel Style="{DynamicResource MainMenuButtonPanel}">
                 <Button Command="{Binding OpenDatabaseCommand}" Style="{DynamicResource MainMenuButton}">Open Database...</Button>
-                <Button Style="{DynamicResource MainMenuButton}">Create DataBase...</Button>
+                <Button Command="{Binding CreateDatabaseCommand}" Style="{DynamicResource MainMenuButton}">Create Database...</Button>
             </StackPanel>
         </Border>
     </Grid>

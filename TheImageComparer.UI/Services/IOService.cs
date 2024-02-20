@@ -16,12 +16,15 @@ public class IOService : IIOService
         return null;
     }
 
-    public string? GetSaveFilePathWithDialog(string filter)
+    public string? GetSaveFilePathWithDialog(string filter, string extension, string defaultName)
     {
         SaveFileDialog saveFileDialog = new()
         {
             Filter = filter,
-            RestoreDirectory = true
+            RestoreDirectory = true,
+            AddExtension = true,
+            DefaultExt = extension,
+            FileName = defaultName
         };
         if (saveFileDialog.ShowDialog() == true)
             return saveFileDialog.FileName;
