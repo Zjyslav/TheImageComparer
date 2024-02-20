@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TheImageComparer.UI.Views"
+             xmlns:viewmodels="clr-namespace:TheImageComparer.UI.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:MainMenuViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -19,7 +21,7 @@
 
         <Border Grid.Row="3"  Style="{DynamicResource MainMenuButtonPanelBorder}">
             <StackPanel Style="{DynamicResource MainMenuButtonPanel}">
-                <Button Style="{DynamicResource MainMenuButton}">Open DataBase...</Button>
+                <Button Command="{Binding OpenDatabaseCommand}" Style="{DynamicResource MainMenuButton}">Open Database...</Button>
                 <Button Style="{DynamicResource MainMenuButton}">Create DataBase...</Button>
             </StackPanel>
         </Border>
