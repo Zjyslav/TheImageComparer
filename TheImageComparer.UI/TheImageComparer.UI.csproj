@@ -18,4 +18,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TheImageComparer.Logic\TheImageComparer.Logic.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -5,6 +5,7 @@ using TheImageComparer.UI.Services;
 using TheImageComparer.UI.StartupHelpers;
 using TheImageComparer.UI.ViewModels;
 using TheImageComparer.UI.Views;
+using TheImageComparer.Logic.Data;
 
 namespace TheImageComparer.UI;
 /// <summary>
@@ -19,6 +20,7 @@ public partial class App : Application
         var builder = Host.CreateApplicationBuilder();
 
         // Add services here
+        builder.Services.AddSqliteDataAccess();
         builder.Services.AddViewsAndViewModels();
         builder.Services.AddViewManagerService();
 
