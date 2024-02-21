@@ -8,14 +8,17 @@ public class ViewManagerService : IViewManagerService
     private ContentControl? _viewer;
     private readonly IAbstractFactory<MainMenuView> _mainMenuFactory;
     private readonly IAbstractFactory<DatabaseMenuView> _databaseMenuFactory;
+    private readonly IAbstractFactory<OpenFolderView> _openFolderFactory;
     private Stack<IView> _views = new();
     private ViewName _defaultViewName = ViewName.MainMenu;
 
     public ViewManagerService(IAbstractFactory<MainMenuView> mainMenuFactory,
-                              IAbstractFactory<DatabaseMenuView> databaseMenuFactory)
+                              IAbstractFactory<DatabaseMenuView> databaseMenuFactory,
+                              IAbstractFactory<OpenFolderView> openFolderFactory)
     {
         _mainMenuFactory = mainMenuFactory;
         _databaseMenuFactory = databaseMenuFactory;
+        _openFolderFactory = openFolderFactory;
     }
 
     public void OpenView(ViewName viewName)
@@ -69,6 +72,8 @@ public class ViewManagerService : IViewManagerService
                 return _mainMenuFactory.Create();
             case ViewName.DatabaseMenu:
                 return _databaseMenuFactory.Create();
+            case ViewName.OpenFolder:
+                return _openFolderFactory.Create();
             default:
                 return null;
         }
@@ -78,5 +83,6 @@ public class ViewManagerService : IViewManagerService
 public enum ViewName
 {
     MainMenu,
-    DatabaseMenu
+    DatabaseMenu,
+    OpenFolder
 }

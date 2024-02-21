@@ -1,14 +1,47 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using TheImageComparer.Logic.Services;
+using TheImageComparer.UI.Messages;
+using TheImageComparer.UI.Services;
 
 namespace TheImageComparer.UI.ViewModels;
 public partial class DatabaseMenuViewModel : ObservableObject
 {
     private readonly IImageComparerService _comparerService;
 
-    public DatabaseMenuViewModel(IImageComparerService comparerService)
+    [ObservableProperty]
+    private IGetSqliteDbFilePath _dbFilePath;
+    private readonly IViewManagerService _viewManager;
+    private readonly IIOService _ioService;
+    private ISetSqliteDbFilePath _setDbFilePath;
+    public DatabaseMenuViewModel(IImageComparerService comparerService,
+                                 ISqliteDbFilePathService dbFilePath,
+                                 IViewManagerService viewManager,
+                                 IIOService ioService)
     {
         _comparerService = comparerService;
+        _dbFilePath = dbFilePath;
+        _setDbFilePath = dbFilePath;
+        _viewManager = viewManager;
+        _ioService = ioService;
+    }
+
+    [RelayCommand]
+    private void CloseDatabase()
+    {
+        _setDbFilePath.DbFilePath = null;
+        _viewManager.CloseView();
+    }
+
+    [RelayCommand]
+    private void OpenFolder()
+    {
+        string? folderPath = _ioService.GetFolderPathWithDialog();
+        if (folderPath is null)
+            return;
+
+        _viewManager.OpenView(ViewName.OpenFolder);
+        WeakReferenceMessenger.Default.Send(new OpenFolderMessage(folderPath));
     }
 }
