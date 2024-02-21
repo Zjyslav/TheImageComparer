@@ -30,4 +30,12 @@ public class IOService : IIOService
             return saveFileDialog.FileName;
         return null;
     }
+
+    public string? GetFolderPathWithDialog()
+    {
+        OpenFolderDialog openFolderDialog = new();
+        if(openFolderDialog.ShowDialog() == true)
+            return openFolderDialog.FolderName;
+        return null;
+    }
 }
