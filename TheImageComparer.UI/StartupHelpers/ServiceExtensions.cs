@@ -19,6 +19,9 @@ public static class ServiceExtensions
 
         services.AddFromFactory<OpenFolderView>();
         services.AddTransient<OpenFolderViewModel>();
+
+        services.AddFromFactory<BrowseImagesView>();
+        services.AddTransient<BrowseImagesViewModel>();
     }
 
     public static void AddViewManagerService(this IServiceCollection services)

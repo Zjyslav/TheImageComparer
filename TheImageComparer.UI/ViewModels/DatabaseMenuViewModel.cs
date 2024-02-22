@@ -46,4 +46,9 @@ public partial class DatabaseMenuViewModel : ObservableObject
         _viewManager.OpenView(ViewName.OpenFolder);
         WeakReferenceMessenger.Default.Send(new OpenFolderMessage(folderPath));
     }
+    [RelayCommand]
+    private void BrowseImages()
+    {
+        _viewManager.OpenView(ViewName.BrowseImages);
+    }
 }

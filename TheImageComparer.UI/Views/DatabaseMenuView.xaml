@@ -20,5 +20,6 @@
         <TextBlock Text="{Binding DbFilePath.DbFilePath}"/>
         <Button Grid.Row="1" Command="{Binding CloseDatabaseCommand}">Close Database</Button>
         <Button Grid.Row="2" Command="{Binding OpenFolderCommand}">Open Folder...</Button>
+        <Button Grid.Row="3" Command="{Binding BrowseImagesCommand}">Browse images</Button>
     </Grid>
 </UserControl>
