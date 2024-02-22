@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using TheImageComparer.Logic.Services;
 using TheImageComparer.UI.Messages;
 using TheImageComparer.UI.Services;
+using Microsoft.Data.Sqlite;
 
 namespace TheImageComparer.UI.ViewModels;
 public partial class DatabaseMenuViewModel : ObservableObject
@@ -32,6 +33,7 @@ public partial class DatabaseMenuViewModel : ObservableObject
     {
         _setDbFilePath.DbFilePath = null;
         _viewManager.CloseView();
+        SqliteConnection.ClearAllPools();
     }
 
     [RelayCommand]
