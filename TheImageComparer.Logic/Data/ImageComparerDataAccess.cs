@@ -20,4 +20,22 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
         using var db = _contextFactory.CreateDbContext(_dbFilePath.DbFilePath);
         return db.Images.AsNoTracking().ToList();
     }
+    public bool ImageAlreadyAdded(string filePath)
+    {
+        if (_dbFilePath.DbFilePath is null)
+            return false;
+        using var db = _contextFactory.CreateDbContext(_dbFilePath.DbFilePath);
+        return db.Images.Any(i => i.FilePath == filePath);
+    }
+
+    public List<ImageModel> AddImages(IEnumerable<string> filePaths)
+    {
+        if (_dbFilePath.DbFilePath is null)
+            return [];
+        using var db = _contextFactory.CreateDbContext(_dbFilePath.DbFilePath);
+        var images = filePaths.Select(f => new ImageModel() { FilePath = f });
+        db.Images.AddRange(images);
+        db.SaveChanges();
+        return images.ToList();
+    }
 }

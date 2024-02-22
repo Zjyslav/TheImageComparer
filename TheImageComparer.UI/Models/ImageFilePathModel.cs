@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.IO;
 using System.Windows.Media;
 
 namespace TheImageComparer.UI.Models;
-public class ImageFilePathModel
+public partial class ImageFilePathModel : ObservableObject
 {
     public ImageFilePathModel(string filePath)
     {
@@ -17,4 +18,6 @@ public class ImageFilePathModel
             return Path.GetFileName(FilePath);
         }
     }
+    [ObservableProperty]
+    private bool _selected = true;
 }

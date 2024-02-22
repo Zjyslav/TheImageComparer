@@ -5,32 +5,44 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TheImageComparer.UI.Views"
              xmlns:viewmodels="clr-namespace:TheImageComparer.UI.ViewModels"
+             xmlns:converters="clr-namespace:TheImageComparer.UI.Converters"
              d:DataContext="{d:DesignInstance Type=viewmodels:OpenFolderViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="400"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="auto" MinWidth="300"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding FolderPath}"/>
 
         <Button Grid.Row="1" Grid.ColumnSpan="2" Command="{Binding GoBackCommand}">Back</Button>
 
-        <ListBox x:Name="fileList" Grid.Row="2" ItemsSource="{Binding ImageFiles}">
+        <Button Grid.Row="2" Command="{Binding SelectAllCommand}" Visibility="{Binding AllSelected, ConverterParameter=inverted, Converter={StaticResource BooleanToVisibilityConverter}}">Select all</Button>
+        <Button Grid.Row="2" Command="{Binding DeselectAllCommand}" Visibility="{Binding AllSelected, Converter={StaticResource BooleanToVisibilityConverter}}">Deselect all</Button>
+
+        <ListBox x:Name="fileList" Grid.Row="3" ItemsSource="{Binding ImageFiles}" SelectedIndex="0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding FileName}" Margin="50 0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 5">
+                        <CheckBox IsChecked="{Binding Selected}"/>
+                        <TextBlock FontSize="{DynamicResource FontSizeSmaller}" Text="{Binding FileName}" Width="300" TextWrapping="Wrap"/>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1">
+        <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Grid.RowSpan="2">
             <Grid Background="Pink" Margin="25">
                 <Grid.OpacityMask>
                     <VisualBrush Visual="{Binding ElementName=imageBorder}"/>
@@ -43,5 +55,7 @@
                 <Image Source="{Binding SelectedItem.FilePath, ElementName=fileList}"/>
             </Grid>
         </WrapPanel>
+
+        <Button Grid.Row="4" Grid.ColumnSpan="2" Command="{Binding AddSelectedImagesCommand}">Add selected</Button>
     </Grid>
 </UserControl>

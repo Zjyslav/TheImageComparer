@@ -15,4 +15,14 @@ public class ImageComparerService : IImageComparerService
     {
         return _dataAccess.GetAllImages();
     }
+
+    public bool ImageAlreadyAdded(string filePath)
+    {
+        return _dataAccess.ImageAlreadyAdded(filePath);
+    }
+
+    public List<ImageModel> AddImages(IEnumerable<string> filePaths)
+    {
+        return _dataAccess.AddImages(filePaths);
+    }
 }
