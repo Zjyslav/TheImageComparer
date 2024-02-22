@@ -38,4 +38,14 @@
         <Setter Property="BorderBrush" Value="White"/>
         <Setter Property="MaxWidth" Value="1000"/>
     </Style>
+
+    <Style TargetType="{x:Type CheckBox}">
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="15 0"/>
+        <Setter Property="LayoutTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
