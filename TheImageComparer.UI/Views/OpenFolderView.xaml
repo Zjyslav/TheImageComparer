@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:TheImageComparer.UI.Views"
              xmlns:viewmodels="clr-namespace:TheImageComparer.UI.ViewModels"
              xmlns:converters="clr-namespace:TheImageComparer.UI.Converters"
+             xmlns:controls="clr-namespace:TheImageComparer.UI.Controls"
              d:DataContext="{d:DesignInstance Type=viewmodels:OpenFolderViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -43,17 +44,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Grid.RowSpan="2">
-            <Grid Background="Pink" Margin="25">
-                <Grid.OpacityMask>
-                    <VisualBrush Visual="{Binding ElementName=imageBorder}"/>
-                </Grid.OpacityMask>
-                <Grid.Effect>
-                    <DropShadowEffect BlurRadius="10" Opacity=".3"/>
-                </Grid.Effect>
-                <Border x:Name="imageBorder" CornerRadius="30" Background="White">
-                </Border>
-                <Image Source="{Binding SelectedItem.FilePath, ElementName=fileList}"/>
-            </Grid>
+            <controls:RoundedImage ImageSource="{Binding SelectedItem.FilePath, ElementName=fileList}" Margin="25"/>
         </WrapPanel>
 
         <Button Grid.Row="4" Grid.ColumnSpan="2" Command="{Binding AddSelectedImagesCommand}">Add selected</Button>
