@@ -6,5 +6,6 @@ public interface IImageComparerDataAccess
 {
     List<ImageModel> AddImages(IEnumerable<string> filePaths);
     List<ImageModel> GetAllImages();
+    List<VoteModel> GetVotesByImageId(int id);
     bool ImageAlreadyAdded(string filePath);
 }

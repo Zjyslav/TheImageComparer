@@ -38,4 +38,15 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
         db.SaveChanges();
         return images.ToList();
     }
+
+    public List<VoteModel> GetVotesByImageId(int id)
+    {
+        if (_dbFilePath.DbFilePath is null)
+            return [];
+        using var db = _contextFactory.CreateDbContext(_dbFilePath.DbFilePath);
+        return db.Votes
+            .AsNoTracking()
+            .Where(v => v.VotedFor.Id == id || v.VotedAgainst.Id == id)
+            .ToList();
+    }
 }
