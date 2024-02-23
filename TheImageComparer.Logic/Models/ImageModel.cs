@@ -7,12 +7,4 @@ public class ImageModel
     public required string FilePath { get; set; }
     public bool IsArchived { get; set; } = false;
     public bool PossibleDuplicate { get; set; } = false;
-    [NotMapped]
-    public string FileName
-    {
-        get
-        {
-            return Path.GetFileName(FilePath);
-        }
-    }
 }
