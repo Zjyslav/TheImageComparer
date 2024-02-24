@@ -26,7 +26,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="{DynamicResource FontSizeSmaller}" Text="{Binding Score}" Width="75" TextAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock FontSize="{DynamicResource FontSizeSmaller}" Text="{Binding Score, StringFormat={}{0:0000}}" Width="75" TextAlignment="Center" FontWeight="Bold"/>
                         <TextBlock FontSize="{DynamicResource FontSizeSmaller}" Text="{Binding FileName}" Width="300" TextWrapping="Wrap"/>
                     </StackPanel>
                 </DataTemplate>
@@ -35,66 +35,9 @@
         <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1">
             <controls:RoundedImage ImageSource="{Binding SelectedItem.FilePath, ElementName=fileList}" Margin="25"/>
         </WrapPanel>
-        <Border Grid.Row="2" Grid.Column="1" Margin="30 5">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+        <controls:ImageSummaryPanel x:Name="imageSummaryPanel" Grid.Row="2" Grid.Column="1" Image="{Binding SelectedItem, ElementName=fileList}"/>
 
-                <TextBlock Grid.Row="0" Grid.Column="0"
-                           FontSize="{DynamicResource FontSizeSmaller}"
-                           Margin="0 0 20 0">
-                    Id
-                </TextBlock>
-                <TextBlock Grid.Row="0" Grid.Column="1"
-                           FontSize="{DynamicResource FontSizeSmaller}"
-                           Text="{Binding SelectedItem.Id ,ElementName=fileList}"/>
                 
-                <TextBlock Grid.Row="1" Grid.Column="0"
-                           FontSize="{DynamicResource FontSizeSmaller}"
-                           Margin="0 0 20 0">
-                    File path
-                </TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="1"
-                           FontSize="{DynamicResource FontSizeSmaller}"
-                           Text="{Binding SelectedItem.FilePath ,ElementName=fileList}"/>
                 
-                <TextBlock Grid.Row="2" Grid.Column="0"
-                           FontSize="{DynamicResource FontSizeSmaller}"
-                           Margin="0 0 20 0">
-                    Votes for
-                </TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="1"
-                           FontSize="{DynamicResource FontSizeSmaller}"
-                           Text="{Binding SelectedItem.VotesFor.Count ,ElementName=fileList}"/>
-                
-                <TextBlock Grid.Row="3" Grid.Column="0"
-                           FontSize="{DynamicResource FontSizeSmaller}"
-                           Margin="0 0 20 0">
-                    Votes against
-                </TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="1"
-                           FontSize="{DynamicResource FontSizeSmaller}"
-                           Text="{Binding SelectedItem.VotesAgainst.Count ,ElementName=fileList}"/>
-                
-                <TextBlock Grid.Row="4" Grid.Column="0"
-                           FontSize="{DynamicResource FontSizeSmaller}"
-                           Margin="0 0 20 0">
-                    Score
-                </TextBlock>
-                <TextBlock Grid.Row="4" Grid.Column="1"
-                           FontSize="{DynamicResource FontSizeSmaller}"
-                           Text="{Binding SelectedItem.Score ,ElementName=fileList}"/>
-                
-            </Grid>
-        </Border>
     </Grid>
 </UserControl>

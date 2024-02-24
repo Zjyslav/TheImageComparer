@@ -23,5 +23,11 @@
                Bottom="100"
                Left="50"
                Right="50"/>
-    
+
+    <Thickness x:Key="ImageSummaryPanelTextMargins"
+           Top="5"
+           Bottom="5"
+           Left="10"
+           Right="10"/>
+
 </ResourceDictionary>
