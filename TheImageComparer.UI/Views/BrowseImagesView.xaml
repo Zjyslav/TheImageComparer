@@ -10,6 +10,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <Grid.Effect>
+            <BlurEffect x:Name="mainGridBlur" Radius="0"/>
+        </Grid.Effect>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -33,11 +36,52 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1">
+            <WrapPanel.Triggers>
+                <EventTrigger RoutedEvent="Image.MouseUp">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames
+                                Storyboard.TargetName="imagePreviewOverlay"
+                                Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation
+                                Storyboard.TargetName="imagePreviewOverlay"
+                                Storyboard.TargetProperty="(Grid.Opacity)"
+                                Duration="0:0:0.3"
+                                From="0" To="1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </WrapPanel.Triggers>
             <controls:RoundedImage ImageSource="{Binding SelectedItem.FilePath, ElementName=fileList}" Margin="25"/>
         </WrapPanel>
         <controls:ImageSummaryPanel x:Name="imageSummaryPanel" Grid.Row="2" Grid.Column="1" Image="{Binding SelectedItem, ElementName=fileList}"/>
 
-                
-                
+        <Grid x:Name="imagePreviewOverlay" Grid.RowSpan="3" Grid.ColumnSpan="2" Visibility="Hidden">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Grid.MouseUp">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames
+                                Storyboard.TargetName="imagePreviewOverlay"
+                                Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Hidden}"/>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation
+                                Storyboard.TargetName="imagePreviewOverlay"
+                                Storyboard.TargetProperty="(Grid.Opacity)"
+                                Duration="0:0:0.3"
+                                From="1" To="0"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Grid.Triggers>
+            <Border Grid.ColumnSpan="2" Grid.RowSpan="3" Background="Black" Opacity=".9">
+            <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <controls:RoundedImage ImageSource="{Binding SelectedItem.FilePath, ElementName=fileList}" Margin="10"/>
+            </WrapPanel>
+        </Grid>
+
     </Grid>
 </UserControl>
