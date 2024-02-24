@@ -77,7 +77,7 @@
                     </BeginStoryboard>
                 </EventTrigger>
             </Grid.Triggers>
-            <Border Grid.ColumnSpan="2" Grid.RowSpan="3" Background="Black" Opacity=".9">
+            <Border Grid.ColumnSpan="2" Grid.RowSpan="3" Background="Black" Opacity=".9"/>
             <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <controls:RoundedImage ImageSource="{Binding SelectedItem.FilePath, ElementName=fileList}" Margin="10"/>
             </WrapPanel>
