@@ -3,7 +3,7 @@ using TheImageComparer.UI.Services;
 using TheImageComparer.UI.ViewModels;
 using TheImageComparer.UI.Views;
 
-namespace TheImageComparer.UI.StartupHelpers;
+namespace TheImageComparer.UI.Helpers.StartupHelpers;
 public static class ServiceExtensions
 {
     public static void AddViewsAndViewModels(this IServiceCollection services)
@@ -22,6 +22,9 @@ public static class ServiceExtensions
 
         services.AddFromFactory<BrowseImagesView>();
         services.AddTransient<BrowseImagesViewModel>();
+
+        services.AddFromFactory<VoteView>();
+        services.AddTransient<VoteViewModel>();
     }
 
     public static void AddViewManagerService(this IServiceCollection services)

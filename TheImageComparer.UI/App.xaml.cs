@@ -2,11 +2,11 @@
 using Microsoft.Extensions.Hosting;
 using System.Windows;
 using TheImageComparer.UI.Services;
-using TheImageComparer.UI.StartupHelpers;
 using TheImageComparer.UI.ViewModels;
 using TheImageComparer.UI.Views;
 using TheImageComparer.Logic.Data;
 using TheImageComparer.Logic.Services;
+using TheImageComparer.UI.Helpers.StartupHelpers;
 
 namespace TheImageComparer.UI;
 /// <summary>
