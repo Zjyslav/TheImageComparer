@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="TheImageComparer.UI.Views.VoteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TheImageComparer.UI.Views"
+             xmlns:controls="clr-namespace:TheImageComparer.UI.Controls"
+             xmlns:viewmodels="clr-namespace:TheImageComparer.UI.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:VoteViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Row="0" Grid.Column="0" Command="{Binding GoBackCommand}">Back</Button>
+
+        <ComboBox Grid.Row="0" Grid.Column="1" SelectedItem="{Binding VoteMode}" ItemsSource="{Binding VoteModeValues}"/>
+
+        <WrapPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <WrapPanel.Triggers>
+                <EventTrigger RoutedEvent="Image.MouseUp">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames
+                                    Storyboard.TargetName="imageLeftPreviewOverlay"
+                                    Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation
+                                    Storyboard.TargetName="imageLeftPreviewOverlay"
+                                    Storyboard.TargetProperty="(Grid.Opacity)"
+                                    Duration="0:0:0.3"
+                                    From="0" To="1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </WrapPanel.Triggers>
+            <controls:RoundedImage ImageSource="{Binding ImageLeft.FilePath}" Margin="5"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <WrapPanel.Triggers>
+                <EventTrigger RoutedEvent="Image.MouseUp">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames
+                                    Storyboard.TargetName="imageRightPreviewOverlay"
+                                    Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation
+                                    Storyboard.TargetName="imageRightPreviewOverlay"
+                                    Storyboard.TargetProperty="(Grid.Opacity)"
+                                    Duration="0:0:0.3"
+                                    From="0" To="1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </WrapPanel.Triggers>
+            <controls:RoundedImage ImageSource="{Binding ImageRight.FilePath}" Margin="5"/>
+        </WrapPanel>
+
+        <Button Grid.Row="2" Grid.Column="0" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageLeft}">Vote</Button>
+        <Button Grid.Row="2" Grid.Column="1" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageRight}">Vote</Button>
+
+        <Grid x:Name="imageLeftPreviewOverlay" Grid.RowSpan="3" Grid.ColumnSpan="2" Visibility="Hidden">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Grid.MouseUp">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames
+                                Storyboard.TargetName="imageLeftPreviewOverlay"
+                                Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Hidden}"/>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation
+                                Storyboard.TargetName="imageLeftPreviewOverlay"
+                                Storyboard.TargetProperty="(Grid.Opacity)"
+                                Duration="0:0:0.3"
+                                From="1" To="0"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Grid.Triggers>
+            <Border Grid.ColumnSpan="2" Grid.RowSpan="3" Background="Black" Opacity=".9"/>
+            <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <controls:RoundedImage ImageSource="{Binding ImageLeft.FilePath}" Margin="10"/>
+            </WrapPanel>
+        </Grid>
+        
+        <Grid x:Name="imageRightPreviewOverlay" Grid.RowSpan="3" Grid.ColumnSpan="2" Visibility="Hidden">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Grid.MouseUp">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames
+                        Storyboard.TargetName="imageRightPreviewOverlay"
+                        Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Hidden}"/>
+                            </ObjectAnimationUsingKeyFrames>
+                            <DoubleAnimation
+                        Storyboard.TargetName="imageRightPreviewOverlay"
+                        Storyboard.TargetProperty="(Grid.Opacity)"
+                        Duration="0:0:0.3"
+                        From="1" To="0"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Grid.Triggers>
+            <Border Grid.ColumnSpan="2" Grid.RowSpan="3" Background="Black" Opacity=".9"/>
+            <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <controls:RoundedImage ImageSource="{Binding ImageRight.FilePath}" Margin="10"/>
+            </WrapPanel>
+        </Grid>
+    </Grid>
+</UserControl>

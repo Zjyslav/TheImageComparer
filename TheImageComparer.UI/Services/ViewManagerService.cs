@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using TheImageComparer.UI.StartupHelpers;
+using TheImageComparer.UI.Helpers.StartupHelpers;
 using TheImageComparer.UI.Views;
 
 namespace TheImageComparer.UI.Services;
@@ -10,18 +10,21 @@ public class ViewManagerService : IViewManagerService
     private readonly IAbstractFactory<DatabaseMenuView> _databaseMenuFactory;
     private readonly IAbstractFactory<OpenFolderView> _openFolderFactory;
     private readonly IAbstractFactory<BrowseImagesView> _browseImagesFactory;
+    private readonly IAbstractFactory<VoteView> _voteFactory;
     private Stack<IView> _views = new();
     private ViewName _defaultViewName = ViewName.MainMenu;
 
     public ViewManagerService(IAbstractFactory<MainMenuView> mainMenuFactory,
                               IAbstractFactory<DatabaseMenuView> databaseMenuFactory,
                               IAbstractFactory<OpenFolderView> openFolderFactory,
-                              IAbstractFactory<BrowseImagesView> browseImagesFactory)
+                              IAbstractFactory<BrowseImagesView> browseImagesFactory,
+                              IAbstractFactory<VoteView> voteFactory)
     {
         _mainMenuFactory = mainMenuFactory;
         _databaseMenuFactory = databaseMenuFactory;
         _openFolderFactory = openFolderFactory;
         _browseImagesFactory = browseImagesFactory;
+        _voteFactory = voteFactory;
     }
 
     public void OpenView(ViewName viewName)
@@ -79,6 +82,8 @@ public class ViewManagerService : IViewManagerService
                 return _openFolderFactory.Create();
             case ViewName.BrowseImages:
                 return _browseImagesFactory.Create();
+            case ViewName.Vote:
+                return _voteFactory.Create();
             default:
                 return null;
         }
@@ -90,5 +95,6 @@ public enum ViewName
     MainMenu,
     DatabaseMenu,
     OpenFolder,
-    BrowseImages
+    BrowseImages,
+    Vote
 }
