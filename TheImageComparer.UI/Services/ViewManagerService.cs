@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Diagnostics;
+using System.Windows.Controls;
 using TheImageComparer.UI.Helpers.StartupHelpers;
 using TheImageComparer.UI.Views;
 
@@ -6,21 +7,19 @@ namespace TheImageComparer.UI.Services;
 public class ViewManagerService : IViewManagerService
 {
     private ContentControl? _viewer;
-    private readonly IAbstractFactory<MainMenuView> _mainMenuFactory;
     private readonly IAbstractFactory<DatabaseMenuView> _databaseMenuFactory;
     private readonly IAbstractFactory<OpenFolderView> _openFolderFactory;
     private readonly IAbstractFactory<BrowseImagesView> _browseImagesFactory;
     private readonly IAbstractFactory<VoteView> _voteFactory;
     private Stack<IView> _views = new();
-    private ViewName _defaultViewName = ViewName.MainMenu;
+    private ViewName _defaultViewName = ViewName.DatabaseMenu;
+    private bool _running = true;
 
-    public ViewManagerService(IAbstractFactory<MainMenuView> mainMenuFactory,
-                              IAbstractFactory<DatabaseMenuView> databaseMenuFactory,
+    public ViewManagerService(IAbstractFactory<DatabaseMenuView> databaseMenuFactory,
                               IAbstractFactory<OpenFolderView> openFolderFactory,
                               IAbstractFactory<BrowseImagesView> browseImagesFactory,
                               IAbstractFactory<VoteView> voteFactory)
     {
-        _mainMenuFactory = mainMenuFactory;
         _databaseMenuFactory = databaseMenuFactory;
         _openFolderFactory = openFolderFactory;
         _browseImagesFactory = browseImagesFactory;
@@ -43,17 +42,24 @@ public class ViewManagerService : IViewManagerService
         ShowInShellViewer();
     }
 
-    public void Start(ContentControl viewer)
+    public async Task StartAsync(ContentControl viewer)
     {
         _viewer = viewer;
-        _views.Clear();
+        AddDefaultView();
         ShowInShellViewer();
+        while (_running)
+        {
+            await Task.Delay(100);
+        }
     }
 
     private void ShowInShellViewer()
     {
         if (_views.Any() == false)
-            AddDefaultView();
+        {
+            _running = false;
+            return;
+        }
 
         if (_viewer is null)
             return;
@@ -74,8 +80,6 @@ public class ViewManagerService : IViewManagerService
     {
         switch (viewName)
         {
-            case ViewName.MainMenu:
-                return _mainMenuFactory.Create();
             case ViewName.DatabaseMenu:
                 return _databaseMenuFactory.Create();
             case ViewName.OpenFolder:

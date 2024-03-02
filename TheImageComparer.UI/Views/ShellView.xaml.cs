@@ -13,6 +13,6 @@ public partial class ShellView : Window
         _viewModel = viewModel;
         DataContext = _viewModel;
 
-        _viewModel.StartViewManager(shellViewer);
+        _viewModel.StartViewer(shellViewer);
     }
 }

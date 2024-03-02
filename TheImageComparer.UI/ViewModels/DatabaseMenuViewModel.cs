@@ -16,6 +16,7 @@ public partial class DatabaseMenuViewModel : ObservableObject
     private readonly IViewManagerService _viewManager;
     private readonly IIOService _ioService;
     private ISetSqliteDbFilePath _setDbFilePath;
+    private bool _dbOpen = true;
     public DatabaseMenuViewModel(IImageComparerService comparerService,
                                  ISqliteDbFilePathService dbFilePath,
                                  IViewManagerService viewManager,
@@ -31,9 +32,13 @@ public partial class DatabaseMenuViewModel : ObservableObject
     [RelayCommand]
     private void CloseDatabase()
     {
+        if (_dbOpen == false)
+            return;
+
         _setDbFilePath.DbFilePath = null;
         _viewManager.CloseView();
         SqliteConnection.ClearAllPools();
+        _dbOpen = false;
     }
 
     [RelayCommand]

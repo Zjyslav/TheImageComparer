@@ -6,8 +6,10 @@ public static class DataServiceExtensions
 {
     public static void AddSqliteDataAccess(this IServiceCollection services)
     {
-        services.AddSingleton<ISqliteDbFilePathService, SqliteDbFilePathService>();
+        services.AddScoped<ISqliteDbFilePathService, SqliteDbFilePathService>();
+        services.AddScoped<ISetSqliteDbFilePath>(provider => provider.GetRequiredService<ISqliteDbFilePathService>());
+        services.AddScoped<IGetSqliteDbFilePath>(provider => provider.GetRequiredService<ISqliteDbFilePathService>());
         services.AddSingleton<ImageComparerDbContextFactory>();
-        services.AddTransient<IImageComparerDataAccess, ImageComparerDataAccess>();
+        services.AddScoped<IImageComparerDataAccess, ImageComparerDataAccess>();
     }
 }

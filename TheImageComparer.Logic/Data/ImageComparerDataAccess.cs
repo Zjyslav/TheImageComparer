@@ -7,46 +7,49 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
 {
     private readonly ImageComparerDbContextFactory _contextFactory;
     private readonly IGetSqliteDbFilePath _dbFilePath;
+    private ImageComparerDbContext? _dbContext;
 
-    public ImageComparerDataAccess(ImageComparerDbContextFactory contextFactory, ISqliteDbFilePathService dbFilePathService)
+    public ImageComparerDataAccess(ImageComparerDbContextFactory contextFactory, IGetSqliteDbFilePath dbFilePath)
     {
         _contextFactory = contextFactory;
-        _dbFilePath = dbFilePathService;
+        _dbFilePath = dbFilePath;
+        
     }
     public List<ImageModel> GetAllImages()
     {
-        if (_dbFilePath.DbFilePath is null)
-            return [];
-        using var db = _contextFactory.CreateDbContext(_dbFilePath.DbFilePath);
-        return db.Images.AsNoTracking().ToList();
+        InitDbContext();
+        return _dbContext!.Images.AsNoTracking().ToList();
     }
     public bool ImageAlreadyAdded(string filePath)
     {
-        if (_dbFilePath.DbFilePath is null)
-            return false;
-        using var db = _contextFactory.CreateDbContext(_dbFilePath.DbFilePath);
-        return db.Images.Any(i => i.FilePath == filePath);
+        InitDbContext();
+        return _dbContext!.Images.Any(i => i.FilePath == filePath);
     }
 
     public List<ImageModel> AddImages(IEnumerable<string> filePaths)
     {
-        if (_dbFilePath.DbFilePath is null)
-            return [];
-        using var db = _contextFactory.CreateDbContext(_dbFilePath.DbFilePath);
+        InitDbContext();
         var images = filePaths.Select(f => new ImageModel() { FilePath = f });
-        db.Images.AddRange(images);
-        db.SaveChanges();
+        _dbContext!.Images.AddRange(images);
+        _dbContext!.SaveChanges();
         return images.ToList();
     }
 
     public List<VoteModel> GetVotesByImageId(int id)
     {
-        if (_dbFilePath.DbFilePath is null)
-            return [];
-        using var db = _contextFactory.CreateDbContext(_dbFilePath.DbFilePath);
-        return db.Votes
+        InitDbContext();
+        return _dbContext!.Votes
             .AsNoTracking()
             .Where(v => v.VotedFor.Id == id || v.VotedAgainst.Id == id)
             .ToList();
+    }
+
+    private void InitDbContext()
+    {
+        if (_dbContext is not null)
+            return;
+
+        if (_dbFilePath.DbFilePath is not null)
+            _dbContext = _contextFactory.CreateDbContext(_dbFilePath.DbFilePath);
     }
 }
