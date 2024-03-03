@@ -29,14 +29,14 @@ public static class ServiceExtensions
 
     public static void AddViewManagerService(this IServiceCollection services)
     {
-        services.AddSingleton<IViewManagerService, ViewManagerService>();
+        services.AddScoped<IViewManagerService, ViewManagerService>();
     }
 
     public static void AddFromFactory<T>(this IServiceCollection services)
         where T : class
     {
         services.AddTransient<T>();
-        services.AddSingleton<Func<T>>(x => () => x.GetService<T>()!);
-        services.AddSingleton<IAbstractFactory<T>, AbstractFactory<T>>();
+        services.AddScoped<Func<T>>(x => () => x.GetService<T>()!);
+        services.AddScoped<IAbstractFactory<T>, AbstractFactory<T>>();
     }
 }

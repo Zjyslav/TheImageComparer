@@ -6,5 +6,5 @@ public interface IViewManagerService
 {
     void CloseView();
     void OpenView(ViewName viewName);
-    void Start(ContentControl viewer);
+    public Task StartAsync(ContentControl viewer);
 }
