@@ -88,6 +88,11 @@ public class ImageComparerService : IImageComparerService
 
         return images.ToList()[Random.Shared.Next(0, images.Count())];
     }
+
+    public void Vote(ImageModel votedFor, ImageModel votedAgainst)
+    {
+        _dataAccess.CreateVote(votedFor, votedAgainst);
+    }
 }
 
 public enum VoteMode

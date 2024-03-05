@@ -18,7 +18,7 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
     public List<ImageModel> GetAllImages()
     {
         InitDbContext();
-        return _dbContext!.Images.AsNoTracking().ToList();
+        return _dbContext!.Images.ToList();
     }
     public bool ImageAlreadyAdded(string filePath)
     {
@@ -39,9 +39,14 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
     {
         InitDbContext();
         return _dbContext!.Votes
-            .AsNoTracking()
             .Where(v => v.VotedFor.Id == id || v.VotedAgainst.Id == id)
             .ToList();
+    }
+    public void CreateVote(ImageModel votedFor, ImageModel votedAgainst)
+    {
+        InitDbContext();
+        _dbContext!.Votes.Add(new() { VotedFor = votedFor, VotedAgainst = votedAgainst});
+        _dbContext!.SaveChanges();
     }
 
     private void InitDbContext()
@@ -52,4 +57,5 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
         if (_dbFilePath.DbFilePath is not null)
             _dbContext = _contextFactory.CreateDbContext(_dbFilePath.DbFilePath);
     }
+
 }

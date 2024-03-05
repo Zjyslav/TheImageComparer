@@ -52,6 +52,13 @@ public partial class VoteViewModel : ObservableObject
     [RelayCommand]
     private void Vote(ImageModel image)
     {
+        if (ImageRight is null || ImageLeft is null)
+            return;
+        if (image == ImageRight)
+            _comparerService.Vote(ImageRight, ImageLeft);
+        else if (image == ImageLeft)
+            _comparerService.Vote(ImageLeft, ImageRight);
+
         GetNewImages();
     }
 
