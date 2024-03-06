@@ -14,6 +14,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -67,8 +68,11 @@
             <controls:RoundedImage ImageSource="{Binding ImageRight.FilePath}" Margin="5"/>
         </WrapPanel>
 
-        <Button Grid.Row="2" Grid.Column="0" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageLeft}">Vote</Button>
-        <Button Grid.Row="2" Grid.Column="1" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageRight}">Vote</Button>
+        <controls:ImageSummaryPanel Grid.Row="2" Grid.Column="0" Image="{Binding ImageLeft}"/>
+        <controls:ImageSummaryPanel Grid.Row="2" Grid.Column="1" Image="{Binding ImageRight}"/>
+
+        <Button Grid.Row="3" Grid.Column="0" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageLeft}">Vote</Button>
+        <Button Grid.Row="3" Grid.Column="1" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageRight}">Vote</Button>
 
         <Grid x:Name="imageLeftPreviewOverlay" Grid.RowSpan="3" Grid.ColumnSpan="2" Visibility="Hidden">
             <Grid.Triggers>

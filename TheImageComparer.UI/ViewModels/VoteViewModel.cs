@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using TheImageComparer.Logic.Models;
 using TheImageComparer.Logic.Services;
+using TheImageComparer.UI.Helpers;
 using TheImageComparer.UI.Models;
 using TheImageComparer.UI.Services;
 
@@ -13,9 +14,9 @@ public partial class VoteViewModel : ObservableObject
     private readonly IViewManagerService _viewManager;
 
     [ObservableProperty]
-    private ImageModel? _imageRight;
+    private ImageUIModel? _imageRight;
     [ObservableProperty]
-    private ImageModel? _imageLeft;
+    private ImageUIModel? _imageLeft;
     [ObservableProperty]
     private VoteMode voteMode = VoteMode.LeastVotesLowestScoreFirst;
     public IEnumerable<VoteMode> VoteModeValues
@@ -45,8 +46,8 @@ public partial class VoteViewModel : ObservableObject
         if (image2 is null)
             return;
 
-        ImageLeft = image1;
-        ImageRight = image2;
+        ImageLeft = _comparerService.ConvertImageModelToUIModel(image1);
+        ImageRight = _comparerService.ConvertImageModelToUIModel(image2);
     }
 
     [RelayCommand]
