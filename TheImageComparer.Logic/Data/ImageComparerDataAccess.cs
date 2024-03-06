@@ -20,6 +20,12 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
         InitDbContext();
         return _dbContext!.Images.ToList();
     }
+
+    public ImageModel? GetImageById(int id)
+    {
+        InitDbContext();
+        return _dbContext!.Images.FirstOrDefault(i => i.Id == id);
+    }
     public bool ImageAlreadyAdded(string filePath)
     {
         InitDbContext();
@@ -42,9 +48,13 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
             .Where(v => v.VotedFor.Id == id || v.VotedAgainst.Id == id)
             .ToList();
     }
-    public void CreateVote(ImageModel votedFor, ImageModel votedAgainst)
+    public void CreateVote(int votedForImageId, int votedAgainstImageId)
     {
         InitDbContext();
+        var votedFor = GetImageById(votedForImageId);
+        var votedAgainst = GetImageById(votedAgainstImageId);
+        if (votedFor is null || votedAgainst is null)
+            return;
         _dbContext!.Votes.Add(new() { VotedFor = votedFor, VotedAgainst = votedAgainst});
         _dbContext!.SaveChanges();
     }

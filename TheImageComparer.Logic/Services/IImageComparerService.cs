@@ -10,5 +10,5 @@ public interface IImageComparerService
     int GetScoreByImageId(int id);
     List<VoteModel> GetVotesByImageId(int id);
     bool ImageAlreadyAdded(string filePath);
-    void Vote(ImageModel votedFor, ImageModel votedAgainst);
+    void Vote(int votedForImageId, int votedAgainstImageId);
 }

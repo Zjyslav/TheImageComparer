@@ -55,9 +55,9 @@ public partial class VoteViewModel : ObservableObject
         if (ImageRight is null || ImageLeft is null)
             return;
         if (image == ImageRight)
-            _comparerService.Vote(ImageRight, ImageLeft);
+            _comparerService.Vote(ImageRight.Id, ImageLeft.Id);
         else if (image == ImageLeft)
-            _comparerService.Vote(ImageLeft, ImageRight);
+            _comparerService.Vote(ImageLeft.Id, ImageRight.Id);
 
         GetNewImages();
     }
