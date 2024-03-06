@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using TheImageComparer.Logic.Models;
 using TheImageComparer.Logic.Services;
+using TheImageComparer.UI.Helpers;
 using TheImageComparer.UI.Models;
 using TheImageComparer.UI.Services;
 
@@ -19,7 +20,7 @@ public partial class BrowseImagesViewModel : ObservableObject
         _viewManager = viewManager;
         Images = _comparerService
             .GetAllImages()
-            .Select(i => ConvertImageModelToUIModel(i))
+            .Select(i => _comparerService.ConvertImageModelToUIModel(i))
             .OrderByDescending(i => i.Score)
             .ThenBy(i => i.FilePath)
             .ToList();
@@ -28,19 +29,5 @@ public partial class BrowseImagesViewModel : ObservableObject
     private void GoBack()
     {
         _viewManager.CloseView();
-    }
-
-    private ImageUIModel ConvertImageModelToUIModel(ImageModel image)
-    {
-        ImageUIModel output = new()
-        {
-            Id = image.Id,
-            FilePath = image.FilePath,
-            IsArchived = image.IsArchived,
-            PossibleDuplicate = image.PossibleDuplicate,
-            Votes = _comparerService.GetVotesByImageId(image.Id),
-            Score = _comparerService.GetScoreByImageId(image.Id)
-        };
-        return output;
     }
 }
