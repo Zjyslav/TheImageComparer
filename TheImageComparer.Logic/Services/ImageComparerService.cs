@@ -69,18 +69,22 @@ public class ImageComparerService : IImageComparerService
         if (GetAllImages().Any() == false)
             return null;
 
-        if (voteMode == VoteMode.LeastVotesLowestScoreFirst || voteMode == VoteMode.LeastVotesHighestScoreFirst)
+        if (voteMode == VoteMode.LeastVotesLowestScoreFirst
+            || voteMode == VoteMode.LeastVotesHighestScoreFirst
+            || voteMode == VoteMode.LeastVotesFirst)
             images = images
                 .GroupBy(i => GetVotesByImageId(i.Id).Count)
                 .OrderBy(g => g.Key)
                 .First();
 
-        if (voteMode == VoteMode.LowestScoreFirst || voteMode == VoteMode.LeastVotesLowestScoreFirst)
+        if (voteMode == VoteMode.LowestScoreFirst
+            || voteMode == VoteMode.LeastVotesLowestScoreFirst)
             images = images
                 .GroupBy(i => GetScoreByImageId(i.Id))
                 .OrderBy(g => g.Key)
                 .First();
-        else if (voteMode == VoteMode.HighestScoreFirst || voteMode == VoteMode.LeastVotesHighestScoreFirst)
+        else if (voteMode == VoteMode.HighestScoreFirst
+            || voteMode == VoteMode.LeastVotesHighestScoreFirst)
             images = images
                 .GroupBy(i => GetScoreByImageId(i.Id))
                 .OrderByDescending(g => g.Key)
@@ -101,6 +105,8 @@ public enum VoteMode
     LeastVotesLowestScoreFirst,
     [Display(Name = "Least Votes, Highest Score First")]
     LeastVotesHighestScoreFirst,
+    [Display(Name = "Least Votes First")]
+    LeastVotesFirst,
     [Display(Name = "Lowest Score First")]
     LowestScoreFirst,
     [Display(Name = "Highest Score First")]
