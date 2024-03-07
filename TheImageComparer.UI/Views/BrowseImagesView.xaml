@@ -26,6 +26,11 @@
         <Button Grid.ColumnSpan="2" Command="{Binding GoBackCommand}">Back</Button>
 
         <ListBox x:Name="fileList" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding Images}" SelectedIndex="0">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
