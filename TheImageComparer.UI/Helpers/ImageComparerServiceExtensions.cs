@@ -13,7 +13,7 @@ public static class ImageComparerServiceExtensions
             FilePath = image.FilePath,
             IsArchived = image.IsArchived,
             PossibleDuplicate = image.PossibleDuplicate,
-            Votes = service.GetVotesByImageId(image.Id),
+            Votes = service.GetVotesByImageId(image.Id).ToList(),
             Score = service.GetScoreByImageId(image.Id)
         };
         return output;

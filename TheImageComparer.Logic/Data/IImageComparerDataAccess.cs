@@ -4,10 +4,10 @@ namespace TheImageComparer.Logic.Data;
 
 public interface IImageComparerDataAccess
 {
-    List<ImageModel> AddImages(IEnumerable<string> filePaths);
+    IEnumerable<ImageModel> AddImages(IEnumerable<string> filePaths);
     void CreateVote(int votedForImageId, int votedAgainstImageId);
-    List<ImageModel> GetAllImages();
+    IEnumerable<ImageModel> GetAllImages();
     ImageModel? GetImageById(int id);
-    List<VoteModel> GetVotesByImageId(int id);
+    IEnumerable<VoteModel> GetVotesByImageId(int id);
     bool ImageAlreadyAdded(string filePath);
 }

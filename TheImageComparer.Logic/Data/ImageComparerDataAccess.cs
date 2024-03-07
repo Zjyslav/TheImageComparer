@@ -15,10 +15,10 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
         _dbFilePath = dbFilePath;
         
     }
-    public List<ImageModel> GetAllImages()
+    public IEnumerable<ImageModel> GetAllImages()
     {
         InitDbContext();
-        return _dbContext!.Images.ToList();
+        return _dbContext!.Images;
     }
 
     public ImageModel? GetImageById(int id)
@@ -32,7 +32,7 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
         return _dbContext!.Images.Any(i => i.FilePath == filePath);
     }
 
-    public List<ImageModel> AddImages(IEnumerable<string> filePaths)
+    public IEnumerable<ImageModel> AddImages(IEnumerable<string> filePaths)
     {
         InitDbContext();
         var images = filePaths.Select(f => new ImageModel() { FilePath = f });
@@ -41,12 +41,13 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
         return images.ToList();
     }
 
-    public List<VoteModel> GetVotesByImageId(int id)
+    public IEnumerable<VoteModel> GetVotesByImageId(int id)
     {
         InitDbContext();
         return _dbContext!.Votes
-            .Where(v => v.VotedFor.Id == id || v.VotedAgainst.Id == id)
-            .ToList();
+            .Include(v => v.VotedFor)
+            .Include(i => i.VotedAgainst)
+            .Where(v => v.VotedFor.Id == id || v.VotedAgainst.Id == id);
     }
     public void CreateVote(int votedForImageId, int votedAgainstImageId)
     {

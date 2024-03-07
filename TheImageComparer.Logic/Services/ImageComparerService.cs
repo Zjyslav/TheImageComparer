@@ -12,7 +12,7 @@ public class ImageComparerService : IImageComparerService
         _dataAccess = dataAccess;
     }
 
-    public List<ImageModel> GetAllImages()
+    public IEnumerable<ImageModel> GetAllImages()
     {
         return _dataAccess.GetAllImages();
     }
@@ -22,19 +22,19 @@ public class ImageComparerService : IImageComparerService
         return _dataAccess.ImageAlreadyAdded(filePath);
     }
 
-    public List<ImageModel> AddImages(IEnumerable<string> filePaths)
+    public IEnumerable<ImageModel> AddImages(IEnumerable<string> filePaths)
     {
         return _dataAccess.AddImages(filePaths);
     }
 
-    public List<VoteModel> GetVotesByImageId(int id)
+    public IEnumerable<VoteModel> GetVotesByImageId(int id)
     {
         return _dataAccess.GetVotesByImageId(id);
     }
 
     public int GetScoreByImageId(int id)
     {
-        var votes = GetVotesByImageId(id);
+        var votes = GetVotesByImageId(id).ToList();
 
         if(votes.Any() == false)
             return 0;
@@ -73,7 +73,7 @@ public class ImageComparerService : IImageComparerService
             || voteMode == VoteMode.LeastVotesHighestScoreFirst
             || voteMode == VoteMode.LeastVotesFirst)
             images = images
-                .GroupBy(i => GetVotesByImageId(i.Id).Count)
+                .GroupBy(i => GetVotesByImageId(i.Id).Count())
                 .OrderBy(g => g.Key)
                 .First();
 
