@@ -12,7 +12,7 @@ public class ImageComparerService : IImageComparerService
         _dataAccess = dataAccess;
     }
 
-    public IEnumerable<ImageModel> GetAllImages()
+    public List<ImageModel> GetAllImages()
     {
         return _dataAccess.GetAllImages();
     }

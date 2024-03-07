@@ -8,6 +8,8 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
     private readonly ImageComparerDbContextFactory _contextFactory;
     private readonly IGetSqliteDbFilePath _dbFilePath;
     private ImageComparerDbContext? _dbContext;
+    private List<ImageModel>? _images;
+    private List<VoteModel>? _votes;
 
     public ImageComparerDataAccess(ImageComparerDbContextFactory contextFactory, IGetSqliteDbFilePath dbFilePath)
     {
@@ -15,21 +17,39 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
         _dbFilePath = dbFilePath;
         
     }
-    public IEnumerable<ImageModel> GetAllImages()
+    public List<ImageModel> GetAllImages()
     {
-        InitDbContext();
-        return _dbContext!.Images;
+        if (_images is null)
+        {
+            InitDbContext();
+            _images = _dbContext!.Images.ToList();
+        }
+
+        return _images;
+    }
+
+    public List<VoteModel> GetAllVotes()
+    {
+        if (_votes is null)
+        {
+            InitDbContext();
+            _votes = _dbContext!
+                .Votes
+                .Include(v => v.VotedFor)
+                .Include(i => i.VotedAgainst)
+                .ToList();
+        }
+
+        return _votes;
     }
 
     public ImageModel? GetImageById(int id)
     {
-        InitDbContext();
-        return _dbContext!.Images.FirstOrDefault(i => i.Id == id);
+        return GetAllImages().FirstOrDefault(i => i.Id == id);
     }
     public bool ImageAlreadyAdded(string filePath)
     {
-        InitDbContext();
-        return _dbContext!.Images.Any(i => i.FilePath == filePath);
+        return GetAllImages().Any(i => i.FilePath == filePath);
     }
 
     public IEnumerable<ImageModel> AddImages(IEnumerable<string> filePaths)
@@ -38,15 +58,13 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
         var images = filePaths.Select(f => new ImageModel() { FilePath = f });
         _dbContext!.Images.AddRange(images);
         _dbContext!.SaveChanges();
-        return images.ToList();
+        _images = null;
+        return images;
     }
 
     public IEnumerable<VoteModel> GetVotesByImageId(int id)
     {
-        InitDbContext();
-        return _dbContext!.Votes
-            .Include(v => v.VotedFor)
-            .Include(i => i.VotedAgainst)
+        return GetAllVotes()
             .Where(v => v.VotedFor.Id == id || v.VotedAgainst.Id == id);
     }
     public void CreateVote(int votedForImageId, int votedAgainstImageId)
@@ -58,6 +76,7 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
             return;
         _dbContext!.Votes.Add(new() { VotedFor = votedFor, VotedAgainst = votedAgainst});
         _dbContext!.SaveChanges();
+        _votes = null;
     }
 
     private void InitDbContext()
@@ -68,5 +87,4 @@ public class ImageComparerDataAccess : IImageComparerDataAccess
         if (_dbFilePath.DbFilePath is not null)
             _dbContext = _contextFactory.CreateDbContext(_dbFilePath.DbFilePath);
     }
-
 }
