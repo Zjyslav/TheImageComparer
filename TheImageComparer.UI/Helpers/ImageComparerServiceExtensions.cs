@@ -5,7 +5,7 @@ using TheImageComparer.UI.Models;
 namespace TheImageComparer.UI.Helpers;
 public static class ImageComparerServiceExtensions
 {
-    public static ImageUIModel ConvertImageModelToUIModel(this IImageComparerService service, ImageModel image)
+    public async static Task<ImageUIModel> ConvertImageModelToUIModel(this IImageComparerService service, ImageModel image)
     {
         ImageUIModel output = new()
         {
@@ -13,8 +13,8 @@ public static class ImageComparerServiceExtensions
             FilePath = image.FilePath,
             IsArchived = image.IsArchived,
             PossibleDuplicate = image.PossibleDuplicate,
-            Votes = service.GetVotesByImageId(image.Id).ToList(),
-            Score = service.GetScoreByImageId(image.Id)
+            Votes = (await service.GetVotesByImageId(image.Id)).ToList(),
+            Score = await service.GetScoreByImageId(image.Id)
         };
         return output;
     }

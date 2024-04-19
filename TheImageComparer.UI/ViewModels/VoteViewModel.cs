@@ -36,31 +36,31 @@ public partial class VoteViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void GetNewImages()
+    private async Task GetNewImages()
     {
-        var image1 = _comparerService.GetImageToVote(VoteMode);
+        var image1 = await _comparerService.GetImageToVote(VoteMode);
         if (image1 is null)
             return;
 
-        var image2 = _comparerService.GetImageToVote(VoteMode, image1);
+        var image2 = await _comparerService.GetImageToVote(VoteMode, image1);
         if (image2 is null)
             return;
 
-        ImageLeft = _comparerService.ConvertImageModelToUIModel(image1);
-        ImageRight = _comparerService.ConvertImageModelToUIModel(image2);
+        ImageLeft = await _comparerService.ConvertImageModelToUIModel(image1);
+        ImageRight = await _comparerService.ConvertImageModelToUIModel(image2);
     }
 
     [RelayCommand]
-    private void Vote(ImageModel image)
+    private async Task Vote(ImageModel image)
     {
         if (ImageRight is null || ImageLeft is null)
             return;
         if (image == ImageRight)
-            _comparerService.Vote(ImageRight.Id, ImageLeft.Id);
+            await _comparerService.Vote(ImageRight.Id, ImageLeft.Id);
         else if (image == ImageLeft)
-            _comparerService.Vote(ImageLeft.Id, ImageRight.Id);
+            await _comparerService.Vote(ImageLeft.Id, ImageRight.Id);
 
-        GetNewImages();
+        await GetNewImages();
     }
 
     [RelayCommand]

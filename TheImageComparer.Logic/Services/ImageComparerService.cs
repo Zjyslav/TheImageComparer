@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using TheImageComparer.Logic.Data;
 using TheImageComparer.Logic.Models;
 
@@ -12,31 +13,31 @@ public class ImageComparerService : IImageComparerService
         _dataAccess = dataAccess;
     }
 
-    public List<ImageModel> GetAllImages()
+    public async Task<List<ImageModel>> GetAllImages()
     {
-        return _dataAccess.GetAllImages();
+        return await _dataAccess.GetAllImages().ToListAsync();
     }
 
     public bool ImageAlreadyAdded(string filePath)
     {
-        return _dataAccess.ImageAlreadyAdded(filePath);
+        return _dataAccess.ImageAlreadyAdded(filePath).Result;
     }
 
-    public IEnumerable<ImageModel> AddImages(IEnumerable<string> filePaths)
+    public async Task<IEnumerable<ImageModel>> AddImages(IEnumerable<string> filePaths)
     {
-        return _dataAccess.AddImages(filePaths);
+        return await _dataAccess.AddImages(filePaths);
     }
 
-    public IEnumerable<VoteModel> GetVotesByImageId(int id)
+    public async Task<IEnumerable<VoteModel>> GetVotesByImageId(int id)
     {
-        return _dataAccess.GetVotesByImageId(id);
+        return await _dataAccess.GetVotesByImageId(id);
     }
 
-    public int GetScoreByImageId(int id)
+    public async Task<int> GetScoreByImageId(int id)
     {
-        var votes = GetVotesByImageId(id).ToList();
+        var votes = (await GetVotesByImageId(id)).ToList();
 
-        if(votes.Any() == false)
+        if (votes.Count == 0)
             return 0;
 
         int votesForCount = votes.Where(v => v.VotedFor.Id == id).Count();
@@ -47,18 +48,18 @@ public class ImageComparerService : IImageComparerService
         return score;
     }
 
-    public ImageModel? GetImageToVote(VoteMode voteMode, ImageModel? anotherImage = null)
+    public async Task<ImageModel?> GetImageToVote(VoteMode voteMode, ImageModel? anotherImage = null)
     {
-        IEnumerable<ImageModel> images = GetAllImages();
+        IEnumerable<ImageModel> images = await GetAllImages();
 
         if (anotherImage is not null)
         {
             List<int> idsToExclude = [anotherImage.Id];
-            idsToExclude.AddRange(GetVotesByImageId(anotherImage.Id)
-                .Select(v =>
-                    v.VotedFor.Id == anotherImage.Id
-                    ? v.VotedAgainst.Id
-                    : v.VotedFor.Id));
+
+            idsToExclude.AddRange(anotherImage.VotesFor
+                .Select(v => v.VotedFor.Id));
+            idsToExclude.AddRange(anotherImage.VotesAgainst
+                .Select(v => v.VotedFor.Id));
 
             if (idsToExclude.Count < images.Count())
                 images = images
@@ -66,36 +67,36 @@ public class ImageComparerService : IImageComparerService
         }
 
 
-        if (GetAllImages().Any() == false)
+        if ((await GetAllImages()).Any() == false)
             return null;
 
         if (voteMode == VoteMode.LeastVotesLowestScoreFirst
             || voteMode == VoteMode.LeastVotesHighestScoreFirst
             || voteMode == VoteMode.LeastVotesFirst)
             images = images
-                .GroupBy(i => GetVotesByImageId(i.Id).Count())
+                .GroupBy(i => i.VotesFor.Count + i.VotesAgainst.Count)
                 .OrderBy(g => g.Key)
                 .First();
 
         if (voteMode == VoteMode.LowestScoreFirst
             || voteMode == VoteMode.LeastVotesLowestScoreFirst)
             images = images
-                .GroupBy(i => GetScoreByImageId(i.Id))
+                .GroupBy(async i => await GetScoreByImageId(i.Id))
                 .OrderBy(g => g.Key)
                 .First();
         else if (voteMode == VoteMode.HighestScoreFirst
             || voteMode == VoteMode.LeastVotesHighestScoreFirst)
             images = images
-                .GroupBy(i => GetScoreByImageId(i.Id))
+                .GroupBy(async i => await GetScoreByImageId(i.Id))
                 .OrderByDescending(g => g.Key)
                 .First();
 
         return images.ToList()[Random.Shared.Next(0, images.Count())];
     }
 
-    public void Vote(int votedForImageId, int votedAgainstImageId)
+    public async Task Vote(int votedForImageId, int votedAgainstImageId)
     {
-        _dataAccess.CreateVote(votedForImageId, votedAgainstImageId);
+        await _dataAccess.CreateVote(votedForImageId, votedAgainstImageId);
     }
 }
 

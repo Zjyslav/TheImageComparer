@@ -16,4 +16,17 @@ public class ImageComparerDbContext : DbContext
     {
         optionsBuilder.UseSqlite($"Data Source={_dbFilePath}");
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ImageModel>()
+            .HasMany(i => i.VotesFor)
+            .WithOne(v => v.VotedFor);
+
+        modelBuilder.Entity<ImageModel>()
+            .HasMany(i => i.VotesAgainst)
+            .WithOne(v => v.VotedAgainst);
+
+        base.OnModelCreating(modelBuilder);
+    }
 }

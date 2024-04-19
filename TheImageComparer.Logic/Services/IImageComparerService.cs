@@ -1,14 +1,13 @@
 ﻿using TheImageComparer.Logic.Models;
 
 namespace TheImageComparer.Logic.Services;
-
 public interface IImageComparerService
 {
-    IEnumerable<ImageModel> AddImages(IEnumerable<string> filePaths);
-    List<ImageModel> GetAllImages();
-    ImageModel? GetImageToVote(VoteMode voteMode, ImageModel? anotherImage = null);
-    int GetScoreByImageId(int id);
-    IEnumerable<VoteModel> GetVotesByImageId(int id);
+    Task<IEnumerable<ImageModel>> AddImages(IEnumerable<string> filePaths);
+    Task<List<ImageModel>> GetAllImages();
+    Task<ImageModel?> GetImageToVote(VoteMode voteMode, ImageModel? anotherImage = null);
+    Task<int> GetScoreByImageId(int id);
+    Task<IEnumerable<VoteModel>> GetVotesByImageId(int id);
     bool ImageAlreadyAdded(string filePath);
-    void Vote(int votedForImageId, int votedAgainstImageId);
+    Task Vote(int votedForImageId, int votedAgainstImageId);
 }
