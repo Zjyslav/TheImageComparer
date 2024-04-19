@@ -7,4 +7,6 @@ public class ImageModel
     public required string FilePath { get; set; }
     public bool IsArchived { get; set; } = false;
     public bool PossibleDuplicate { get; set; } = false;
+    public ICollection<VoteModel> VotesFor { get; set; } = new List<VoteModel>();
+    public ICollection<VoteModel> VotesAgainst { get; set; } = new List<VoteModel>();
 }

@@ -20,7 +20,8 @@ public partial class BrowseImagesViewModel : ObservableObject
         _viewManager = viewManager;
         Images = _comparerService
             .GetAllImages()
-            .Select(i => _comparerService.ConvertImageModelToUIModel(i))
+            .Result
+            .Select(i => _comparerService.ConvertImageModelToUIModel(i).Result)
             .OrderByDescending(i => i.Score)
             .ThenBy(i => i.FilePath)
             .ToList();
