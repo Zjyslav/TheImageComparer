@@ -46,8 +46,8 @@ public partial class VoteViewModel : ObservableObject
         if (image2 is null)
             return;
 
-        ImageLeft = await _comparerService.ConvertImageModelToUIModel(image1);
-        ImageRight = await _comparerService.ConvertImageModelToUIModel(image2);
+        ImageLeft = image1.ToUiModel();
+        ImageRight = image2.ToUiModel();
     }
 
     [RelayCommand]
