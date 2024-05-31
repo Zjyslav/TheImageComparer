@@ -44,8 +44,7 @@ public class ImageComparerService : IImageComparerService
         }
 
         List<ImageModel> availableImages = GetAvailableImages(allImages, voteMode, anotherImage);
-        int imageIndex = Random.Shared.Next(0, availableImages.Count);
-        var image = availableImages.ElementAt(imageIndex);
+        ImageModel image = GetRandomImage(availableImages);
         return image;
     }
 
@@ -127,6 +126,13 @@ public class ImageComparerService : IImageComparerService
         return groupedByScore
                         .OrderByDescending(g => g.Key)
                         .First(g => g.Any());
+    }
+
+    private static ImageModel GetRandomImage(List<ImageModel> availableImages)
+    {
+        int imageIndex = Random.Shared.Next(0, availableImages.Count);
+        var image = availableImages.ElementAt(imageIndex);
+        return image;
     }
 
     private static bool LeastVotesFirst(VoteMode voteMode)
