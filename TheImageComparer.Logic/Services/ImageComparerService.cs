@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using TheImageComparer.Logic.Data;
+using TheImageComparer.Logic.Helpers;
 using TheImageComparer.Logic.Models;
 
 namespace TheImageComparer.Logic.Services;
@@ -28,75 +29,122 @@ public class ImageComparerService : IImageComparerService
         return await _dataAccess.AddImages(filePaths);
     }
 
-    public async Task<IEnumerable<VoteModel>> GetVotesByImageId(int id)
+    public async Task Vote(int votedForImageId, int votedAgainstImageId)
     {
-        return await _dataAccess.GetVotesByImageId(id);
-    }
-
-    public async Task<int> GetScoreByImageId(int id)
-    {
-        var votes = (await GetVotesByImageId(id)).ToList();
-
-        if (votes.Count == 0)
-            return 0;
-
-        int votesForCount = votes.Where(v => v.VotedFor.Id == id).Count();
-        int votesAgainstCount = votes.Where(v => v.VotedAgainst.Id == id).Count();
-
-        int score = (votesForCount * 1000) / (votesForCount + votesAgainstCount);
-
-        return score;
+        await _dataAccess.CreateVote(votedForImageId, votedAgainstImageId);
     }
 
     public async Task<ImageModel?> GetImageToVote(VoteMode voteMode, ImageModel? anotherImage = null)
     {
-        IEnumerable<ImageModel> images = await GetAllImages();
+        List<ImageModel> allImages = await GetAllImages();
+
+        if (allImages.Count == 0)
+        {
+            return null;
+        }
+
+        List<ImageModel> availableImages = GetAvailableImages(allImages, voteMode, anotherImage);
+        int imageIndex = Random.Shared.Next(0, availableImages.Count);
+        var image = availableImages.ElementAt(imageIndex);
+        return image;
+    }
+
+    private static List<ImageModel> GetAvailableImages(List<ImageModel> allImages, VoteMode voteMode, ImageModel? anotherImage)
+    {
+        IEnumerable<ImageModel> filteredImages = allImages;
 
         if (anotherImage is not null)
         {
-            List<int> idsToExclude = [anotherImage.Id];
-
-            idsToExclude.AddRange(anotherImage.VotesFor
-                .Select(v => v.VotedFor.Id));
-            idsToExclude.AddRange(anotherImage.VotesAgainst
-                .Select(v => v.VotedFor.Id));
-
-            if (idsToExclude.Count < images.Count())
-                images = images
-                    .Where(i => idsToExclude.Contains(i.Id) == false);
+            filteredImages = ExcludeAnotherImageAndAlreadyVoted(anotherImage, filteredImages);
         }
 
+        if (LeastVotesFirst(voteMode))
+        {
+            filteredImages = FilterLowestVotes(filteredImages);
+        }
 
-        if ((await GetAllImages()).Any() == false)
-            return null;
+        filteredImages = FilterByScore(voteMode, filteredImages);
 
-        if (voteMode == VoteMode.LeastVotesLowestScoreFirst
-            || voteMode == VoteMode.LeastVotesHighestScoreFirst
-            || voteMode == VoteMode.LeastVotesFirst)
-            images = images
-                .GroupBy(i => i.VotesFor.Count + i.VotesAgainst.Count)
-                .OrderBy(g => g.Key)
-                .First();
-
-        if (voteMode == VoteMode.LowestScoreFirst
-            || voteMode == VoteMode.LeastVotesLowestScoreFirst)
-            images = images
-                .GroupBy(async i => await GetScoreByImageId(i.Id))
-                .OrderBy(g => g.Key)
-                .First();
-        else if (voteMode == VoteMode.HighestScoreFirst
-            || voteMode == VoteMode.LeastVotesHighestScoreFirst)
-            images = images
-                .GroupBy(async i => await GetScoreByImageId(i.Id))
-                .OrderByDescending(g => g.Key)
-                .First();
-
-        return images.ToList()[Random.Shared.Next(0, images.Count())];
+        var availableImages = filteredImages.ToList();
+        return availableImages;
     }
 
-    public async Task Vote(int votedForImageId, int votedAgainstImageId)
+    private static IEnumerable<ImageModel> ExcludeAnotherImageAndAlreadyVoted(ImageModel? anotherImage, IEnumerable<ImageModel> filteredImages)
     {
-        await _dataAccess.CreateVote(votedForImageId, votedAgainstImageId);
+        List<int> idsToExclude = [anotherImage.Id];
+
+        idsToExclude.AddRange(anotherImage.VotesFor
+            .Select(v => v.VotedFor.Id));
+        idsToExclude.AddRange(anotherImage.VotesAgainst
+            .Select(v => v.VotedFor.Id));
+
+        if (idsToExclude.Count < filteredImages.Count())
+            filteredImages = filteredImages
+                .Where(i => idsToExclude.Contains(i.Id) == false);
+        return filteredImages;
+    }
+
+    private static IEnumerable<ImageModel> FilterLowestVotes(IEnumerable<ImageModel> filteredImages)
+    {
+        var groupedByCount = filteredImages
+                        .GroupBy(i => i.GetVotesCount());
+
+        var ordered = groupedByCount
+            .OrderBy(g => g.Key);
+
+        filteredImages = ordered
+            .First(g => g.Any());
+        return filteredImages;
+    }
+
+    private static IEnumerable<ImageModel> FilterByScore(VoteMode voteMode, IEnumerable<ImageModel> filteredImages)
+    {
+        var groupedByScore = filteredImages
+                        .GroupBy(i => i.GetScore())
+                        .ToList();
+
+        if (LowestScoreFirst(voteMode))
+        {
+            filteredImages = FilterLowestScore(groupedByScore);
+        }
+        else if (HighestScoreFirst(voteMode))
+        {
+            filteredImages = FilterHighestScore(groupedByScore);
+        }
+
+        return filteredImages;
+    }
+
+    private static IEnumerable<ImageModel> FilterLowestScore(List<IGrouping<int, ImageModel>> groupedByScore)
+    {
+        return groupedByScore
+                        .OrderBy(g => g.Key)
+                        .First(g => g.Any());
+    }
+
+    private static IEnumerable<ImageModel> FilterHighestScore(List<IGrouping<int, ImageModel>> groupedByScore)
+    {
+        return groupedByScore
+                        .OrderByDescending(g => g.Key)
+                        .First(g => g.Any());
+    }
+
+    private static bool LeastVotesFirst(VoteMode voteMode)
+    {
+        return voteMode == VoteMode.LeastVotesLowestScoreFirst
+                    || voteMode == VoteMode.LeastVotesHighestScoreFirst
+                    || voteMode == VoteMode.LeastVotesFirst;
+    }
+    private static bool LowestScoreFirst(VoteMode voteMode)
+    {
+        return voteMode == VoteMode.LowestScoreFirst
+                    || voteMode == VoteMode.LeastVotesLowestScoreFirst;
+    }
+
+    private static bool HighestScoreFirst(VoteMode voteMode)
+    {
+        return voteMode == VoteMode.HighestScoreFirst
+                    || voteMode == VoteMode.LeastVotesHighestScoreFirst;
     }
 }
 
