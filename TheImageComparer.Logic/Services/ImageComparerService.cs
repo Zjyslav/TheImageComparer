@@ -68,7 +68,7 @@ public class ImageComparerService : IImageComparerService
         return availableImages;
     }
 
-    private static IEnumerable<ImageModel> ExcludeAnotherImageAndAlreadyVoted(ImageModel? anotherImage, IEnumerable<ImageModel> filteredImages)
+    private static IEnumerable<ImageModel> ExcludeAnotherImageAndAlreadyVoted(ImageModel anotherImage, IEnumerable<ImageModel> filteredImages)
     {
         List<int> idsToExclude = [anotherImage.Id];
 
@@ -99,8 +99,7 @@ public class ImageComparerService : IImageComparerService
     private static IEnumerable<ImageModel> FilterByScore(VoteMode voteMode, IEnumerable<ImageModel> filteredImages)
     {
         var groupedByScore = filteredImages
-                        .GroupBy(i => i.GetScore())
-                        .ToList();
+                        .GroupBy(i => i.GetScore());
 
         if (LowestScoreFirst(voteMode))
         {
@@ -114,14 +113,14 @@ public class ImageComparerService : IImageComparerService
         return filteredImages;
     }
 
-    private static IEnumerable<ImageModel> FilterLowestScore(List<IGrouping<int, ImageModel>> groupedByScore)
+    private static IEnumerable<ImageModel> FilterLowestScore(IEnumerable<IGrouping<int, ImageModel>> groupedByScore)
     {
         return groupedByScore
                         .OrderBy(g => g.Key)
                         .First(g => g.Any());
     }
 
-    private static IEnumerable<ImageModel> FilterHighestScore(List<IGrouping<int, ImageModel>> groupedByScore)
+    private static IEnumerable<ImageModel> FilterHighestScore(IEnumerable<IGrouping<int, ImageModel>> groupedByScore)
     {
         return groupedByScore
                         .OrderByDescending(g => g.Key)

@@ -6,6 +6,16 @@ public static class ImageModelExtensions
     public static int GetVotesForCount(this ImageModel image) => image.VotesFor.Count;
     public static int GetVotesAgainstCount(this ImageModel image) => image.VotesAgainst.Count;
     public static int GetVotesCount(this ImageModel image) => image.GetVotesForCount() + image.GetVotesAgainstCount();
-    public static int GetScore(this ImageModel image) => (image.GetVotesForCount() * 1000) / image.GetVotesCount();
+    public static int GetScore(this ImageModel image)
+    {
+        int imageCount = image.GetVotesCount();
+        if (imageCount == 0)
+        {
+            return 0;
+        }
+
+        return (image.GetVotesForCount() * 1000) / image.GetVotesCount();
+    }
+
     public static List<VoteModel> GetAllVotes(this ImageModel image) => image.VotesFor.Concat(image.VotesAgainst).ToList();
 }

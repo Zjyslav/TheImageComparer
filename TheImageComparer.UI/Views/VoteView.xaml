@@ -12,6 +12,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -24,8 +25,10 @@
         <Button Grid.Row="0" Grid.Column="0" Command="{Binding GoBackCommand}">Back</Button>
 
         <ComboBox Grid.Row="0" Grid.Column="1" SelectedItem="{Binding VoteMode}" ItemsSource="{Binding VoteModeValues}"/>
+        
+        <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding GetNewImagesCommand}">Get Images To Vote</Button>
 
-        <WrapPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <WrapPanel Grid.Row="2" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <WrapPanel.Triggers>
                 <EventTrigger RoutedEvent="Image.MouseUp">
                     <BeginStoryboard>
@@ -46,7 +49,7 @@
             </WrapPanel.Triggers>
             <controls:RoundedImage ImageSource="{Binding ImageLeft.FilePath}" Margin="5"/>
         </WrapPanel>
-        <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <WrapPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <WrapPanel.Triggers>
                 <EventTrigger RoutedEvent="Image.MouseUp">
                     <BeginStoryboard>
@@ -68,13 +71,13 @@
             <controls:RoundedImage ImageSource="{Binding ImageRight.FilePath}" Margin="5"/>
         </WrapPanel>
 
-        <controls:ImageSummaryPanel Grid.Row="2" Grid.Column="0" Image="{Binding ImageLeft}"/>
-        <controls:ImageSummaryPanel Grid.Row="2" Grid.Column="1" Image="{Binding ImageRight}"/>
+        <controls:ImageSummaryPanel Grid.Row="3" Grid.Column="0" Image="{Binding ImageLeft}"/>
+        <controls:ImageSummaryPanel Grid.Row="3" Grid.Column="1" Image="{Binding ImageRight}"/>
 
-        <Button Grid.Row="3" Grid.Column="0" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageLeft}">Vote</Button>
-        <Button Grid.Row="3" Grid.Column="1" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageRight}">Vote</Button>
+        <Button Grid.Row="4" Grid.Column="0" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageLeft}">Vote</Button>
+        <Button Grid.Row="4" Grid.Column="1" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageRight}">Vote</Button>
 
-        <Grid x:Name="imageLeftPreviewOverlay" Grid.RowSpan="3" Grid.ColumnSpan="2" Visibility="Hidden">
+        <Grid x:Name="imageLeftPreviewOverlay" Grid.RowSpan="5" Grid.ColumnSpan="2" Visibility="Hidden">
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Grid.MouseUp">
                     <BeginStoryboard>
@@ -99,7 +102,7 @@
             </WrapPanel>
         </Grid>
         
-        <Grid x:Name="imageRightPreviewOverlay" Grid.RowSpan="3" Grid.ColumnSpan="2" Visibility="Hidden">
+        <Grid x:Name="imageRightPreviewOverlay" Grid.RowSpan="5" Grid.ColumnSpan="2" Visibility="Hidden">
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Grid.MouseUp">
                     <BeginStoryboard>
