@@ -5,7 +5,11 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheImageComparer.UI", "TheImageComparer.UI\TheImageComparer.UI.csproj", "{4E2B0988-72BA-44EE-B7B0-F76E1441D4CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheImageComparer.Logic", "TheImageComparer.Logic\TheImageComparer.Logic.csproj", "{BCC5BA01-8CB5-4405-AC24-71C9BA8246B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheImageComparer.Logic", "TheImageComparer.Logic\TheImageComparer.Logic.csproj", "{BCC5BA01-8CB5-4405-AC24-71C9BA8246B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{43FA8039-B898-4FF1-8C62-E953861362C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheImageComparer.Logic.Tests", "Tests\TheImageComparer.Logic.Tests\TheImageComparer.Logic.Tests.csproj", "{C7660956-D525-4545-BB85-2B0329BD78B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +25,16 @@ Global
 		{BCC5BA01-8CB5-4405-AC24-71C9BA8246B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCC5BA01-8CB5-4405-AC24-71C9BA8246B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCC5BA01-8CB5-4405-AC24-71C9BA8246B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7660956-D525-4545-BB85-2B0329BD78B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7660956-D525-4545-BB85-2B0329BD78B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7660956-D525-4545-BB85-2B0329BD78B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7660956-D525-4545-BB85-2B0329BD78B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C7660956-D525-4545-BB85-2B0329BD78B3} = {43FA8039-B898-4FF1-8C62-E953861362C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B3547746-D556-45EA-BDB0-C007D8024321}
