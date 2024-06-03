@@ -27,6 +27,9 @@ public static class ServiceExtensions
         services.AddFromFactory<VoteView>();
         services.AddTransient<VoteViewModel>();
 
+        services.AddFromFactory<ImageDetailsView>();
+        services.AddTransient<ImageDetailsViewModel>();
+
         services.AddScoped<IViewFactory, ViewFactory>();
     }
 
