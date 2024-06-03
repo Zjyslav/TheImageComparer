@@ -27,7 +27,7 @@ public static class ServiceExtensions
         services.AddFromFactory<VoteView>();
         services.AddTransient<VoteViewModel>();
 
-        services.AddSingleton<IViewFactory, ViewFactory>();
+        services.AddScoped<IViewFactory, ViewFactory>();
     }
 
     public static void AddViewManagerService(this IServiceCollection services)
