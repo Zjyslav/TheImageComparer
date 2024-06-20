@@ -22,6 +22,7 @@
         <Button Grid.Row="1" Command="{Binding CloseDatabaseCommand}">Close Database</Button>
         <Button Grid.Row="2" Command="{Binding OpenFolderCommand}">Open Folder...</Button>
         <Button Grid.Row="3" Command="{Binding BrowseImagesCommand}">Browse images</Button>
+        <Button Grid.Row="3" Command="{Binding VoteStatsCommand}">Vote stats</Button>
         <Button Grid.Row="4" Command="{Binding VoteCommand}">Vote</Button>
     </Grid>
 </UserControl>

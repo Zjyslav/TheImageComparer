@@ -80,5 +80,6 @@ public enum ViewName
     DatabaseMenu,
     OpenFolder,
     BrowseImages,
-    Vote
+    Vote,
+    VoteStats
 }
