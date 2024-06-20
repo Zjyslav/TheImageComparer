@@ -81,5 +81,6 @@ public enum ViewName
     OpenFolder,
     BrowseImages,
     Vote,
-    ImageDetails
+    VoteStats,
+    ImageDetails,
 }

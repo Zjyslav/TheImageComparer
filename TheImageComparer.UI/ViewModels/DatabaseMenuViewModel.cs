@@ -62,4 +62,10 @@ public partial class DatabaseMenuViewModel : ObservableObject
     {
         _viewManager.OpenView(ViewName.Vote);
     }
+
+    [RelayCommand]
+    private void VoteStats()
+    {
+        _viewManager.OpenView(ViewName.VoteStats);
+    }
 }
