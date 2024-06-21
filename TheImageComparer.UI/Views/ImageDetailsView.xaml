@@ -9,14 +9,14 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" Command="{Binding GoBackCommand}">Back</Button>
-        <controls:RoundedImage Grid.Row="1" ImageSource="{Binding Image.FilePath}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <controls:ImageSummaryPanel Grid.Row="2" Image="{Binding Image}"/>
+        <controls:RoundedImage Grid.Row="0" ImageSource="{Binding Image.FilePath}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <controls:ImageSummaryPanel Grid.Row="1" Image="{Binding Image}"/>
+        <Button Grid.Row="2" Command="{Binding GoBackCommand}">Back</Button>
 
     </Grid>
 </UserControl>
