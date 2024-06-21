@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows.Controls;
+using TheImageComparer.UI.Factories;
 using TheImageComparer.UI.Helpers.StartupHelpers;
 using TheImageComparer.UI.Views;
 
@@ -7,23 +8,14 @@ namespace TheImageComparer.UI.Services;
 public class ViewManagerService : IViewManagerService
 {
     private ContentControl? _viewer;
-    private readonly IAbstractFactory<DatabaseMenuView> _databaseMenuFactory;
-    private readonly IAbstractFactory<OpenFolderView> _openFolderFactory;
-    private readonly IAbstractFactory<BrowseImagesView> _browseImagesFactory;
-    private readonly IAbstractFactory<VoteView> _voteFactory;
     private Stack<IView> _views = new();
     private ViewName _defaultViewName = ViewName.DatabaseMenu;
     private bool _running = true;
+    private readonly IViewFactory _viewFactory;
 
-    public ViewManagerService(IAbstractFactory<DatabaseMenuView> databaseMenuFactory,
-                              IAbstractFactory<OpenFolderView> openFolderFactory,
-                              IAbstractFactory<BrowseImagesView> browseImagesFactory,
-                              IAbstractFactory<VoteView> voteFactory)
+    public ViewManagerService(IViewFactory viewFactory)
     {
-        _databaseMenuFactory = databaseMenuFactory;
-        _openFolderFactory = openFolderFactory;
-        _browseImagesFactory = browseImagesFactory;
-        _voteFactory = voteFactory;
+        _viewFactory = viewFactory;
     }
 
     public void OpenView(ViewName viewName)
@@ -78,19 +70,7 @@ public class ViewManagerService : IViewManagerService
 
     private IView? CreateView(ViewName viewName)
     {
-        switch (viewName)
-        {
-            case ViewName.DatabaseMenu:
-                return _databaseMenuFactory.Create();
-            case ViewName.OpenFolder:
-                return _openFolderFactory.Create();
-            case ViewName.BrowseImages:
-                return _browseImagesFactory.Create();
-            case ViewName.Vote:
-                return _voteFactory.Create();
-            default:
-                return null;
-        }
+        return _viewFactory.CreateView(viewName);
     }
 }
 
@@ -100,5 +80,7 @@ public enum ViewName
     DatabaseMenu,
     OpenFolder,
     BrowseImages,
-    Vote
+    Vote,
+    VoteStats,
+    ImageDetails,
 }

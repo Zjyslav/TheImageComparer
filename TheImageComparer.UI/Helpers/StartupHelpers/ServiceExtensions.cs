@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using TheImageComparer.UI.Factories;
 using TheImageComparer.UI.Services;
 using TheImageComparer.UI.ViewModels;
 using TheImageComparer.UI.Views;
@@ -25,6 +26,14 @@ public static class ServiceExtensions
 
         services.AddFromFactory<VoteView>();
         services.AddTransient<VoteViewModel>();
+
+        services.AddFromFactory<VoteStatsView>();
+        services.AddTransient<VoteStatsViewModel>();
+
+        services.AddFromFactory<ImageDetailsView>();
+        services.AddTransient<ImageDetailsViewModel>();
+
+        services.AddScoped<IViewFactory, ViewFactory>();
     }
 
     public static void AddViewManagerService(this IServiceCollection services)

@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using TheImageComparer.Logic.Models;
 using TheImageComparer.Logic.Services;
 using TheImageComparer.UI.Helpers;
+using TheImageComparer.UI.Messages;
 using TheImageComparer.UI.Models;
 using TheImageComparer.UI.Services;
 
@@ -30,5 +32,15 @@ public partial class BrowseImagesViewModel : ObservableObject
     private void GoBack()
     {
         _viewManager.CloseView();
+    }
+
+    [RelayCommand]
+    private void ShowDetails(ImageModel image)
+    {
+        if(image is null)
+            return;
+
+        _viewManager.OpenView(ViewName.ImageDetails);
+        WeakReferenceMessenger.Default.Send<ShowImageDetailsMessage>(new(image));
     }
 }
