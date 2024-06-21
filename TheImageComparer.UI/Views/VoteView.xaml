@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:TheImageComparer.UI.Views"
              xmlns:controls="clr-namespace:TheImageComparer.UI.Controls"
              xmlns:viewmodels="clr-namespace:TheImageComparer.UI.ViewModels"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
              d:DataContext="{d:DesignInstance Type=viewmodels:VoteViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -14,6 +15,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -71,13 +73,16 @@
             <controls:RoundedImage ImageSource="{Binding ImageRight.FilePath}" Margin="5"/>
         </WrapPanel>
 
-        <controls:ImageSummaryPanel Grid.Row="3" Grid.Column="0" Image="{Binding ImageLeft}"/>
-        <controls:ImageSummaryPanel Grid.Row="3" Grid.Column="1" Image="{Binding ImageRight}"/>
+        <controls:ImageSummaryBar Grid.Row="3" Grid.Column="0" Image="{Binding ImageLeft}"/>
+        <controls:ImageSummaryBar Grid.Row="3" Grid.Column="1" Image="{Binding ImageRight}"/>
 
-        <Button Grid.Row="4" Grid.Column="0" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageLeft}">Vote</Button>
-        <Button Grid.Row="4" Grid.Column="1" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageRight}">Vote</Button>
+        <Button Grid.Row="4" Grid.Column="0" Command="{Binding ShowDetailsCommand}" CommandParameter="{Binding ImageLeft}">Show Details</Button>
+        <Button Grid.Row="4" Grid.Column="1" Command="{Binding ShowDetailsCommand}" CommandParameter="{Binding ImageRight}">Show Details</Button>
+        
+        <Button Grid.Row="5" Grid.Column="0" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageLeft}">Vote</Button>
+        <Button Grid.Row="5" Grid.Column="1" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageRight}">Vote</Button>
 
-        <Grid x:Name="imageLeftPreviewOverlay" Grid.RowSpan="5" Grid.ColumnSpan="2" Visibility="Hidden">
+        <Grid x:Name="imageLeftPreviewOverlay" Grid.RowSpan="6" Grid.ColumnSpan="2" Visibility="Hidden">
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Grid.MouseUp">
                     <BeginStoryboard>
@@ -102,7 +107,7 @@
             </WrapPanel>
         </Grid>
         
-        <Grid x:Name="imageRightPreviewOverlay" Grid.RowSpan="5" Grid.ColumnSpan="2" Visibility="Hidden">
+        <Grid x:Name="imageRightPreviewOverlay" Grid.RowSpan="6" Grid.ColumnSpan="2" Visibility="Hidden">
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Grid.MouseUp">
                     <BeginStoryboard>

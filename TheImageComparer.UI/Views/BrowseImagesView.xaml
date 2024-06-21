@@ -17,6 +17,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -25,7 +26,7 @@
 
         <Button Grid.ColumnSpan="2" Command="{Binding GoBackCommand}">Back</Button>
 
-        <ListBox x:Name="fileList" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding Images}" SelectedIndex="0">
+        <ListBox x:Name="fileList" Grid.Row="1" Grid.RowSpan="3" ItemsSource="{Binding Images}" SelectedIndex="0">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel Orientation="Vertical" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"/>
@@ -62,6 +63,7 @@
             <controls:RoundedImage ImageSource="{Binding SelectedItem.FilePath, ElementName=fileList}" Margin="25"/>
         </WrapPanel>
         <controls:ImageSummaryPanel x:Name="imageSummaryPanel" Grid.Row="2" Grid.Column="1" Image="{Binding SelectedItem, ElementName=fileList}"/>
+        <Button Grid.Row="3" Grid.Column="1" Command="{Binding ShowDetailsCommand}" CommandParameter="{Binding SelectedItem, ElementName=fileList}">Show Details</Button>
 
         <Grid x:Name="imagePreviewOverlay" Grid.RowSpan="3" Grid.ColumnSpan="2" Visibility="Hidden">
             <Grid.Triggers>

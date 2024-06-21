@@ -10,18 +10,21 @@ public class ViewFactory : IViewFactory
     private readonly IAbstractFactory<BrowseImagesView> _browseImagesFactory;
     private readonly IAbstractFactory<VoteView> _voteFactory;
     private readonly IAbstractFactory<VoteStatsView> _voteStatsFactory;
+    private readonly IAbstractFactory<ImageDetailsView> _imageDetailsFactory;
 
     public ViewFactory(IAbstractFactory<DatabaseMenuView> databaseMenuFactory,
                        IAbstractFactory<OpenFolderView> openFolderFactory,
                        IAbstractFactory<BrowseImagesView> browseImagesFactory,
                        IAbstractFactory<VoteView> voteFactory,
-                       IAbstractFactory<VoteStatsView> voteStatsFactory)
+                       IAbstractFactory<VoteStatsView> voteStatsFactory,
+                       IAbstractFactory<ImageDetailsView> imageDetailsFactory)
     {
         _databaseMenuFactory = databaseMenuFactory;
         _openFolderFactory = openFolderFactory;
         _browseImagesFactory = browseImagesFactory;
         _voteFactory = voteFactory;
         _voteStatsFactory = voteStatsFactory;
+        _imageDetailsFactory = imageDetailsFactory;
     }
 
     public IView? CreateView(ViewName viewName)
@@ -38,6 +41,8 @@ public class ViewFactory : IViewFactory
                 return _voteFactory.Create();
             case ViewName.VoteStats:
                 return _voteStatsFactory.Create();
+            case ViewName.ImageDetails:
+                return _imageDetailsFactory.Create();
             default:
                 return null;
         }
