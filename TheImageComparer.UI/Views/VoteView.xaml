@@ -82,7 +82,7 @@
         <Button Grid.Row="5" Grid.Column="0" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageLeft}">Vote</Button>
         <Button Grid.Row="5" Grid.Column="1" Command="{Binding VoteCommand}" CommandParameter="{Binding ImageRight}">Vote</Button>
 
-        <Grid x:Name="imageLeftPreviewOverlay" Grid.RowSpan="5" Grid.ColumnSpan="2" Visibility="Hidden">
+        <Grid x:Name="imageLeftPreviewOverlay" Grid.RowSpan="6" Grid.ColumnSpan="2" Visibility="Hidden">
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Grid.MouseUp">
                     <BeginStoryboard>
@@ -107,7 +107,7 @@
             </WrapPanel>
         </Grid>
         
-        <Grid x:Name="imageRightPreviewOverlay" Grid.RowSpan="5" Grid.ColumnSpan="2" Visibility="Hidden">
+        <Grid x:Name="imageRightPreviewOverlay" Grid.RowSpan="6" Grid.ColumnSpan="2" Visibility="Hidden">
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Grid.MouseUp">
                     <BeginStoryboard>
