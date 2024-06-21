@@ -73,8 +73,8 @@
             <controls:RoundedImage ImageSource="{Binding ImageRight.FilePath}" Margin="5"/>
         </WrapPanel>
 
-        <controls:ImageSummaryPanel Grid.Row="3" Grid.Column="0" Image="{Binding ImageLeft}"/>
-        <controls:ImageSummaryPanel Grid.Row="3" Grid.Column="1" Image="{Binding ImageRight}"/>
+        <controls:ImageSummaryBar Grid.Row="3" Grid.Column="0" Image="{Binding ImageLeft}"/>
+        <controls:ImageSummaryBar Grid.Row="3" Grid.Column="1" Image="{Binding ImageRight}"/>
 
         <Button Grid.Row="4" Grid.Column="0" Command="{Binding ShowDetailsCommand}" CommandParameter="{Binding ImageLeft}">Show Details</Button>
         <Button Grid.Row="4" Grid.Column="1" Command="{Binding ShowDetailsCommand}" CommandParameter="{Binding ImageRight}">Show Details</Button>
